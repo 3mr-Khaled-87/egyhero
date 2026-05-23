@@ -1,0 +1,317 @@
+        .landing-wrapper {
+          min-height: 100vh;
+          background-color: #fffaf5;
+          font-family: 'Tajawal', sans-serif;
+          width: 100%;
+          height: max-content;
+        }
+
+        * { box-sizing: border-box; }
+
+        .hero-landing {
+          min-height: 70vh;
+          max-height: 100vh;
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          padding: 20px;
+          border-radius: 0 0 10px 10px;
+          overflow: visible;
+          background-image: url(../imgs/غلاف.jpg);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+
+        .bg-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+        }
+
+        .green-gradient-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(27, 94, 32, 0.4) 0%, rgba(13, 50, 15, 0.6) 100%);
+        }
+
+        .hero-inner {
+          text-align: center;
+          width: 100%;
+          max-width: 1100px;
+          z-index: 20;
+          animation: fadeIn 1s ease-out;
+          display: flex;
+          flex-direction: column;
+          gap: 40px;
+          position: relative;
+        }
+
+        .header-branding {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            padding: 50px 40px;
+            text-align: right;
+            width: 100%;
+            /* Glassmorphism Card Style like the screenshots */
+            /* background: rgba(0, 30, 5, 0.45);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6); */
+        }
+
+        .branding-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 70px;
+            width: 100%;
+        }
+
+        .branding-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .description-left {
+            flex: 1;
+            text-align: right;
+            padding-right: 20px;
+            border-right: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 30;
+        }
+
+        .brand-txt {
+          font-size: 32px;
+          font-weight: 900;
+          margin: 0;
+          letter-spacing: 2px;
+          color: #ffcc00;
+          text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .main-slogan {
+          font-size: 48px;
+          font-weight: 900;
+          margin: 5px 0;
+          color: #fff;
+          text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+          white-space: normal;
+        }
+
+        .description-txt {
+          font-size: 25px;
+          line-height: 1.6;
+          font-weight: 800;
+          margin: 0;
+          background: linear-gradient(135deg, #ffcc00 0%, #ffffff 50%, #2ecc71 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .cta-container {
+          display: flex;
+          gap: 20px;
+          justify-content: center;
+          margin-top: 10px;
+          width: 100%;
+          max-width: 100%;
+          flex-wrap: wrap;
+        }
+
+        .yellow-pill-btn {
+          background-color: #ffde00;
+          color: #1b5e20;
+          padding: 14px 30px;
+          border-radius: 50px;
+          font-size: 20px;
+          font-weight: 900;
+          text-decoration: none;
+          box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+          transition: 0.3s;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          max-width: 100%;
+          text-align: center;
+        }
+        .yellow-pill-btn:hover {
+            transform: scale(1.05);
+            background-color: #fff;
+        }
+
+        .secondary-pill-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 900;
+            text-decoration: none;
+            border: 2px solid #fff;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 100%;
+            text-align: center;
+        }
+        .secondary-pill-btn:hover {
+            background-color: #fff;
+            color: #1b5e20;
+            transform: scale(1.05);
+        }
+
+        .landing-main {
+          padding: 60px 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 50px;
+        }
+
+        .video-box-container {
+          width: 100%;
+          max-width: 750px;
+        }
+
+        .dashed-video-box {
+          width: 100%;
+          height: 320px;
+          border: 2px dashed #a0a4a8;
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: transparent;
+        }
+
+        .play-icon-circle {
+          width: 80px;
+          height: 80px;
+          border: 2px solid #3d5a28;
+          border-radius: 12px; /* كما في الصورة الحواف منحنية قليلاً وليست دائرة كاملة */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .stats-row-container {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          width: 100%;
+          max-width: 1100px;
+          flex-wrap: wrap;
+          justify-content: space-around;
+        }
+
+        .stat-card-gold {
+          background-color: white;
+          border: 2px solid #e3c47e;
+          border-radius: 20px;
+          width: 300px;
+          padding: 30px 20px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+          transition: all 0.3s ease;
+        }
+        .stat-card-gold:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 15px 40px rgba(227, 196, 126, 0.2);
+          border-color: #ffcc00;
+        }
+
+        .stat-icon-gold {
+          color: #ffcc00;
+          margin-bottom: 20px;
+          transition: 0.3s;
+        }
+        .stat-card-gold:hover .stat-icon-gold {
+          transform: scale(1.1);
+        }
+
+        .stat-content h3 {
+          font-size: 36px;
+          font-weight: 900;
+          margin: 0;
+          color: #1b5e20;
+          direction: ltr;
+        }
+
+        .stat-content p {
+          font-size: 20px;
+          color: #4a5d3b;
+          font-weight: 800;
+          margin: 5px 0 0;
+        }
+
+        @media (max-width: 900px) {
+          .branding-row {
+              flex-direction: column;
+              text-align: center;
+              gap: 40px;
+          }
+          .header-branding {
+              padding: 30px 20px;
+              border-radius: 25px;
+          }
+          .description-left {
+              border-right: none;
+              padding-right: 0;
+              text-align: center;
+          }
+          .logo-container {
+              position: relative;
+              top: 0;
+              right: 0;
+              margin: 0 auto 20px;
+              width: fit-content;
+          }
+          .main-slogan {
+              font-size: 28px;
+              white-space: normal;
+          }
+          .description-txt {
+              font-size: 18px;
+          }
+          .hero-inner {
+              gap: 20px;
+              padding: 40px 10px;
+          }
+          .cta-container {
+              flex-direction: column;
+              width: 100%;
+              gap: 12px;
+          }
+          .yellow-pill-btn, .secondary-pill-btn {
+              width: 100%;
+              text-align: center;
+              padding: 12px 20px;
+              font-size: 18px;
+          }
+        }
+        @media (max-width: 768px) {
+          .stat-card-gold { width: 100%; }
+          .dashed-video-box { height: 200px; }
+        }

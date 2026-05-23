@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200..900&display=swap');
+
+.authWrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.bgImage {
+    position: absolute;
+    inset: 0;
+    z-index: -2; /* Pushed further back */
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45); /* Blackish overlay */
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px);
+    z-index: -1; /* Behind content, in front of image */
+}
+
+.authContent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center; /* Center them to bring them closer */
+    align-items: center;
+    z-index: 1;
+    gap: 40px; /* Controlled distance between form and slogan */
+}
+
+.formContainer {
+    flex: 0 1 550px; /* Don't grow too much, base width 550px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+.backLink {
+    position: fixed; /* Changed to fixed to stay in the corner of the entire page */
+    top: 30px;
+    right: 30px; /* Top right corner as requested */
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 900;
+    padding: 12px 15px;
+    background: linear-gradient(135deg, #1b5e20, #16a34a);
+    border-radius: 50px;
+    border: 2px solid #ffcc00;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 2000; 
+}
+
+.backLink:hover { 
+    transform: scale(1.05) translateY(-2px);
+    background: #15803d;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.authCard {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px 40px;
+    border-radius: 24px;
+    text-align: center;
+}
+
+.cardHeader h2 {
+    color: #1b5e20;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.cardHeader p {
+    color: #475569;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.authForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.nameRow {
+    display: flex;
+    gap: 10px;
+}
+
+.inputGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.inputGroup .icon {
+    position: absolute;
+    right: 15px;
+    color: #94a3b8;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 12px 40px 12px 45px; /* Added left padding for eye icon */
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    outline: none;
+    font-size: 14px;
+}
+
+.eyeIcon {
+    position: absolute;
+    left: 15px; /* End of input in RTL */
+    color: #94a3b8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    padding: 0;
+    transition: color 0.2s;
+    z-index: 5;
+}
+
+.eyeIcon:hover {
+    color: #16a34a;
+}
+
+.inputGroup input:focus {
+    border-color: #22c55e;
+}
+
+.submitBtn {
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #1b5e20, #eab308);
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+
+.submitBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(27, 94, 32, 0.3);
+}
+
+.authFooter {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.toggleLink {
+    color: #16a34a;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.heroBranding {
+    flex: 0 1 450px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    background: transparent;
+    z-index: 10;
+}
+
+.brandingContent {
+    max-width: 80%;
+}
+
+.heroFigure {
+    margin-bottom: 25px;
+    animation: float 3s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+
+.logoImage {
+    object-fit: contain;
+}
+
+.gradientIcon {
+    /* Back to normal color, no bg */
+    color: white;
+    display: inline-block;
+    line-height: 1;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+}
+
+.gradientIcon svg {
+    fill: currentColor;
+}
+
+.logoGradient {
+    background: linear-gradient(135deg, #22c55e, #ffcc00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.mainTitle {
+    font-size: 52px;
+    font-weight: 900;
+    margin-bottom: 15px;
+    line-height: 1.2;
+}
+
+.subTitle {
+    font-size: 20px;
+    font-weight: 700;
+    opacity: 0.95;
+    line-height: 1.5;
+}
+
+@media (max-width: 1000px) {
+    .heroBranding { display: none; }
+    .formContainer { flex: 1; }
+    .backLink { right: 20px; top: 20px; padding: 10px 20px; font-size: 14px; }
+}

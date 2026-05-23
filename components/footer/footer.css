@@ -1,0 +1,90 @@
+.footer{
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: green;
+    background-color: #eee;
+    height: max-content;
+    padding: 0 30px 70px;
+    gap: 30px;
+}
+.footer .def , .footer .fastLinks , .footer .contactInfo{
+    text-align: justify;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.footer .def p{
+    color: rgb(0, 66, 0);
+    width: 80%;
+}
+.footer .fastLinks{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.footer .fastLinks .link{
+    text-decoration: none;
+    color: rgb(0, 66, 0);
+    font-size: 16px;
+    font-weight: 600;
+}
+.footer .fastLinks .link:hover{
+    color: rgb(0, 184, 0);
+}
+.footer .contactInfo{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.footer .contactInfo .emailSec{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.footer .contactInfo .emails{
+    display: flex;
+    flex-direction: column;
+}
+.footer .contactInfo .phoneInfo{
+    display: flex;
+    gap: 15px;
+}
+.footer .contactInfo .phoneInfo span{
+    direction: ltr;
+}
+
+.footer .secure{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    background-color: rgb(163, 255, 163);
+    padding-top: 10px;
+
+}
+
+.footer .secure p{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.footer .FooterLogos{
+    display: flex;
+    gap: 20px;
+}
+.footer .FooterLogos .Elogo{
+    width: 120px;
+    height: 100px
+}
+
+.footer .FooterLogos{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}

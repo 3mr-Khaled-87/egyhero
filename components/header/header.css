@@ -1,0 +1,574 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Beiruti:wght@200..900&family=Ropa+Sans:ital@0;1&display=swap');
+*{
+    transition: 0.2s ease;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: max-content;
+    padding: 15px 0;
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(255,255,255, 0.1);
+    border-bottom: 1px solid #eee;
+    box-shadow: 1px 1px 15px #eee;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+.responseve{
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.links{
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: green;
+    width: 80%;
+    height: 100%;
+}
+.links .link{
+    text-decoration: none;
+    color: #eee;
+    font-size: 18px;
+    font-weight: 600;
+}
+.links .link:hover{
+    color: rgb(0, 218, 0);
+    text-decoration: underline;
+}
+.logo{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    width: 20%;
+}
+.menu-trigger, .profile-trigger {
+    display: none;
+}
+.logo-center-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+.logo-center-side img{
+    width: 90px;
+    height: auto;
+}
+.logo-center-side h3 , .logo-center-side .res-icon{
+    display: none;
+}
+.mobile-profile-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #28a745;
+}
+
+.desktop-profile-only {
+    display: flex;
+}
+
+.register{
+    width: 20%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: max-content;
+    padding: 15px;
+    text-align: center;
+}
+.register .login , .register .sign-up{
+    width: max-content;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: green;
+    font-size: 16px;
+    font-weight: 600;
+    border: 1px solid rgb(0, 255, 0);
+}
+
+.register .login{
+    background-color: rgb(0, 255, 0);
+}
+.register .sign-up{
+    border: 1px solid rgb(0, 255, 0);
+}
+.register .login:hover{
+    background-color: transparent;
+}
+.register .sign-up:hover{
+    background-color: rgb(0, 255, 0);
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: max-content;
+    padding-left: 15px;
+}
+
+.profile-trigger a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Large screens (> 1130px) - Restructure header layout */
+@media (min-width: 1131px) {
+    header {
+        justify-content: space-around;
+    }
+
+    .logo {
+        order: 3;
+        flex: 0;
+    }
+
+    .responseve {
+        order: 2;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .profile-trigger {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding-left: 0;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 1130px) {
+    header , .responseve , .links{
+        flex-direction: column;
+    }
+    
+    header{
+        z-index: 998;
+        height: 93px;
+        padding: 0;
+    }
+    .logo{
+        width: 100%;
+        z-index: 999;
+        position: fixed;
+        top: 0;
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(30px);
+        border-bottom: 1px solid #eee;
+        box-shadow: 1px 1px 15px #eee;
+        border-radius: 15px;
+        justify-content: space-between;
+        direction: rtl;
+        height: 93px; /* Match header height */
+    }
+    .menu-trigger, .profile-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+    }
+    .logo-center-side {
+        flex: 1;
+    }
+    .logo .res-icon , .logo h3{
+        display: block;
+        font-family: "Beiruti"," sans-serif";
+        font-size: 24px;
+        color: green;
+        margin: 0;
+    }
+    .logo .res-icon
+    {
+        font-size: 35px;
+        cursor: pointer;
+    }
+    .logo img {
+        width: 60px;
+    }
+    .desktop-profile-only, .desktop-notifications-only {
+        display: none !important;
+    }
+    .responseve , .links{
+        width: 100%;
+    }
+    .responseve{
+        background-color: #eee;
+        transform: translateY(-120%);
+
+    }
+    .show{
+        transform: translateY(95px);
+        border-radius: 10px;
+        background-color: #eeeeee;
+        border-bottom: 1px solid #eee;
+        box-shadow: 1px 1px 15px #eee;
+        height: max-content;
+        backdrop-filter: blur(10px);
+    }
+    .links{
+        background-color: transparent;
+    }
+    .links .link{
+        color: green;
+        padding: 10px;
+        width: max-content;
+        padding: 5px 20px;
+        margin: 10px;
+        border-radius: 5px;
+    }
+    .register{
+        width: max-content;
+        gap: 25px;
+        flex-wrap: wrap;
+    }
+}
+
+/* Logo Link Styles */
+.logo-center-side a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+/* Logged In Profile Container */
+.logged-in-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Mobile Notification Wrapper */
+.mobile-notification-wrapper {
+    position: relative;
+}
+
+.mobile-notification-wrapper .bell-icon {
+    cursor: pointer;
+    color: #28a745;
+}
+
+/* Notification Badge */
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.notification-badge-desktop {
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    top: -8px;
+    right: -8px;
+}
+
+/* Mobile Notifications Dropdown */
+.mobile-notifications-dropdown {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 280px;
+    background-color: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    z-index: 1001;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+}
+
+.notifications-dropdown-header {
+    margin: 0;
+    padding: 12px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    text-align: right;
+}
+
+.notifications-dropdown-header-desktop {
+    padding: 15px 20px;
+    font-size: 16px;
+}
+
+/* Notifications List Container */
+.notifications-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notifications-list-desktop {
+    max-height: 350px;
+}
+
+/* Empty Notifications Message */
+.empty-notifications {
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+}
+
+.empty-notifications-desktop {
+    padding: 30px 20px;
+    font-size: 14px;
+}
+
+/* Notification Item */
+.notification-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: right;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.notification-item.unread {
+    background-color: #f0fdf4;
+}
+
+.notification-item.read {
+    background-color: white;
+}
+
+.notification-item-desktop {
+    padding: 15px 20px;
+    gap: 12px;
+}
+
+/* Notification Content */
+.notification-content {
+    flex: 1;
+}
+
+.notification-text {
+    margin: 0;
+    font-size: 13px;
+    color: #333;
+}
+
+.notification-text-desktop {
+    font-size: 14px;
+}
+
+.notification-actor {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.notification-timestamp {
+    font-size: 11px;
+    color: #999;
+}
+
+/* Mobile Profile Container */
+.mobile-profile-container {
+    cursor: pointer;
+}
+
+/* Desktop Profile Only */
+.desktop-profile-only {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.desktop-profile-item {
+    cursor: pointer;
+}
+
+/* Desktop Notifications Only */
+.desktop-notifications-only {
+    position: relative;
+}
+
+.desktop-notifications-only .bell-icon {
+    cursor: pointer;
+    color: #28a745;
+}
+
+/* Desktop Notifications Dropdown */
+.desktop-notifications-dropdown {
+    position: absolute;
+    top: 40px;
+    left: -140px;
+    width: 320px;
+    background-color: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    z-index: 1000;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+}
+
+/* Register Link Styles */
+.register-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.register-text {
+    color: #28a745;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Admin Link */
+.admin-link {
+    color: #28a745;
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid #28a745;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Logout Icon */
+.logout-icon {
+    cursor: pointer;
+    color: #dc3545;
+}
+
+/* Desktop Buttons Container */
+.desktop-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Confirm Modal Styles */
+.confirm-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+}
+
+.confirm-modal-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.confirm-modal-title {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.confirm-modal-message {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.confirm-modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.confirm-modal-cancel-btn {
+    padding: 10px 25px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    color: #666;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.confirm-modal-delete-btn {
+    padding: 10px 25px;
+    border-radius: 10px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+
+    .logo .logo-text {
+        display: none;
+    }
+    .logo {
+        padding: 10px 10px;
+    }
+    
+    .profile-trigger {
+        padding-left: 10px;
+        gap: 10px;
+    }
+    
+    .register {
+        width: 100%;
+        padding: 10px 20px;
+        gap: 10px;
+        justify-content: center;
+        border-top: 1px solid #ddd;
+        background-color: white;
+    }
+    
+    .register .login, .register .sign-up {
+        width: auto;
+        padding: 8px 16px;
+        font-size: 14px;
+        flex: 1;
+        min-width: 120px;
+    }
+}
+

@@ -1,0 +1,105 @@
+.video-footer {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  z-index: 100;
+}
+
+.video-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-family: 'Tajawal', sans-serif;
+  cursor: pointer;
+  border: none;
+  font-size: 14px;
+  flex-direction: column;
+}
+
+.circle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+  box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.circle-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.circle-label {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  max-width: 80px;
+  line-height: 1.3;
+}
+
+.video-button:hover .circle-icon {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(27, 94, 32, 0.4);
+  background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+}
+
+.video-button:active .circle-icon {
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .video-footer {
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .circle-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .circle-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .circle-label {
+    font-size: 11px;
+    margin-top: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-footer {
+    bottom: 15px;
+    left: 15px;
+  }
+
+  .circle-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .circle-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .circle-label {
+    display: none;
+  }
+}

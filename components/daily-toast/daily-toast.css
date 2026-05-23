@@ -1,0 +1,137 @@
+.daily-toast {
+  display: none;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  max-width: 90%;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Show on mobile screens only */
+@media (max-width: 1399px) {
+  .daily-toast {
+    display: block;
+  }
+}
+
+.daily-toast.show .toast-card {
+  animation: slideDown 0.4s ease-in-out forwards;
+}
+
+.daily-toast.hide .toast-card {
+  animation: slideUp 0.4s ease-in-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.toast-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fdf4 100%);
+  border-radius: 12px;
+  padding: 16px;
+  border-right: 4px solid #1b5e20;
+  box-shadow: 0 4px 16px rgba(27, 94, 32, 0.2);
+}
+
+.toast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.toast-type {
+  background-color: #1b5e20;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.toast-content {
+  text-align: center;
+}
+
+.toast-text {
+  font-size: 20px;
+  line-height: 1.7;
+  color: #1b5e20;
+  font-weight: 500;
+  margin: 8px 0;
+  font-family: 'Tajawal', 'Droid Arabic Kufi', serif;
+}
+
+.toast-source {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+  margin: 8px 0 0 0;
+  font-family: 'Tajawal', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .daily-toast {
+    top: 100px;
+  }
+
+  .toast-card {
+    padding: 14px;
+  }
+
+  .toast-text {
+    font-size: 20px;
+  }
+
+  .toast-source {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .daily-toast {
+    top: 90px;
+    max-width: 95%;
+  }
+
+  .toast-card {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .toast-text {
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .toast-source {
+    font-size: 10px;
+  }
+
+  .toast-type {
+    padding: 3px 8px;
+    font-size: 9px;
+  }
+}

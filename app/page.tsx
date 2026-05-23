@@ -1,65 +1,199 @@
-import Image from "next/image";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
 
-export default function Home() {
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { BsPlayFill, BsStarFill, BsCardChecklist, BsPersonPlusFill } from 'react-icons/bs';
+import { API_BASE_URL } from '@/service/apiConfig';
+import landingBg from '@/imgs/landing-bg.png';
+import logo from '@/imgs/logo.png';
+import ChatBot from "@/components/chatbot/chatbot";
+import DailyToast from "@/components/daily-toast/daily-toast";
+import VideoFooter from "@/components/video-footer/video-footer";
+import "./mainPage.css"
+
+export default function LandingPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [stats, setStats] = useState({
+    heroes: 0,
+    works: 0,
+    points: 0
+  });
+
+  useEffect(() => {
+    // ── Pre-mount Check ──────────────────────────────────────────
+    const searchParams = new URLSearchParams(window.location.search);
+    const isPreview = searchParams.get('preview') === 'true';
+    
+    const hasSeenWelcome = typeof window !== 'undefined' && localStorage.getItem('hasSeenWelcome');
+
+    // Show landing page on first visit ALWAYS (regardless of login state)
+    
+    // Only redirect to home if they've been here before
+    if (!isPreview && hasSeenWelcome) {
+      router.replace('/home');
+      return;
+    }
+    setLoading(false);
+    // Check login state
+    setIsLoggedIn(!!localStorage.getItem('token'));
+
+    // ── Fetch Global Stats ───────────────────────────────────────
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/volunteers/`);
+        if (!res.ok) throw new Error("Failed to fetch stats");
+        const data = await res.json();
+        
+        const uniqueUsers = new Set(data.map((p: any) => p.user)).size;
+        const approvedWorks = data.filter((p: any) => p.status === 'approved').length;
+        const totalPoints = data.reduce((acc: number, p: any) => acc + (p.points || 0), 0);
+        
+        setStats({
+          heroes: uniqueUsers,
+          works: approvedWorks,
+          points: totalPoints
+        });
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
+
+    fetchStats();
+  }, [router]);
+
+  const markSeenAndNavigate = (targetPath: string) => {
+    localStorage.setItem('hasSeenWelcome', 'true');
+    router.push(targetPath);
+  };
+
+  if (loading) return null; // Avoid flicker
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="landing-wrapper" dir="rtl">
+      <ChatBot />
+      {/* Top Section - Hero */}
+      <section className="hero-landing">
+        <span className='overlay'></span>
+        <div className="bg-overlay">
+          <Image 
+            src={landingBg} 
+            alt="Background" 
+            fill 
+            style={{ objectFit: 'cover' }} 
+            priority 
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        
+        <div className="hero-inner">
+          <div className="header-branding">
+            <div className="branding-row">
+              {/* Right Side: Logo and Slogan */}
+              <div className="branding-right">
+                <div className="logo-container">
+                  <Image src={logo} alt="Egy Hero" width={120} height={100} className="logo-main" />
+                </div>
+                <h1 className="brand-txt">EGY HERO</h1>
+                <h2 className="main-slogan">بطل في سباق الخير</h2>
+              </div>
+
+              {/* Left Side: Description */}
+              <div className="description-left">
+                <p className="description-txt">
+                  منصة رقمية تهدف إلى تحفيز طلاب الجامعات على المشاركة في العمل التطوعي وتوثيق إنجازاتهم المجتمعية بأسلوب تفاعلي ومحفز.
+                </p>
+              </div>
+            </div>
+
+            <div className="cta-container">
+              {isLoggedIn ? (
+                <>
+                  <button 
+                    onClick={() => markSeenAndNavigate('/home')} 
+                    className="yellow-pill-btn"
+                  >
+                    🏠 استكشف الأعمال
+                  </button>
+                  <button 
+                    onClick={() => markSeenAndNavigate('/uploadWorks')} 
+                    className="secondary-pill-btn"
+                  >
+                    ✨ وثّق عملك الآن
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button 
+                    onClick={() => markSeenAndNavigate('/register')} 
+                    className="yellow-pill-btn"
+                  >
+                    إبدأ رحلتك
+                  </button>
+                  <button 
+                    onClick={() => markSeenAndNavigate('/home')} 
+                    className="secondary-pill-btn"
+                  >
+                    تصفح كضيف
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content Sections */}
+      <main className="landing-main">
+        {/* Video Placeholder */}
+        <div className="video-box-container">
+          <div className="dashed-video-box">
+             <div className="play-icon-circle">
+                <BsPlayFill size={50} color="#1b5e20" />
+             </div>
+          </div>
+        </div>
+
+        {/* Stats Row */}
+        <div className="stats-row-container">
+           {/* بطل مشارك */}
+          <div className="stat-card-gold">
+            <div className="stat-icon-gold">
+              <BsPersonPlusFill size={55} />
+            </div>
+            <div className="stat-content">
+              <h3>+{stats.heroes.toLocaleString('ar-EG')}</h3>
+              <p>بطل مشارك</p>
+            </div>
+          </div>
+
+          {/* عمل تطوعي */}
+          <div className="stat-card-gold">
+            <div className="stat-icon-gold">
+              <BsCardChecklist size={55} />
+            </div>
+            <div className="stat-content">
+              <h3>+{stats.works.toLocaleString('ar-EG')}</h3>
+              <p>عمل تطوعي موثق</p>
+            </div>
+          </div>
+
+          {/* نقطة خير */}
+          <div className="stat-card-gold">
+            <div className="stat-icon-gold">
+              <BsStarFill size={55} />
+            </div>
+            <div className="stat-content">
+              <h3>+{stats.points.toLocaleString('ar-EG')}</h3>
+              <p>نقطة خير تم جمعها</p>
+            </div>
+          </div>
         </div>
       </main>
+      <VideoFooter />
     </div>
   );
 }
