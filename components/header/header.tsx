@@ -1,5 +1,5 @@
 'use client'
-import { BsBell as BsBellIcon, BsBoxArrowRight as BsLogoutIcon, BsList as BsListIcon, BsX as BsCloseIcon, BsHouseFill, BsTrophyFill, BsCloudUploadFill, BsInfoCircle } from "react-icons/bs";
+import { BsBell as BsBellIcon, BsBoxArrowRight as BsLogoutIcon, BsList as BsListIcon, BsX as BsCloseIcon, BsHouse, BsTrophy, BsCloudUpload, BsInfoCircle } from "react-icons/bs";
 import Image from 'next/image';
 import logo from "@/imgs/logo.png";
 import Link from 'next/link';
@@ -146,15 +146,15 @@ export default function Header() {
                 <div className="header-section-right">
                     <nav className="desktop-nav-links">
                         <Link href="/home" className='link'>
-                            <BsHouseFill className="nav-icon" />
+                            <BsHouse className="nav-icon" />
                             <span className="nav-text">الرئيسية</span>
                         </Link>
                         <Link href="/leaderBoard" className='link'>
-                            <BsTrophyFill className="nav-icon" />
+                            <BsTrophy className="nav-icon" />
                             <span className="nav-text">لوحة المتصدرين</span>
                         </Link>
                         <Link href="/uploadWorks" className='link'>
-                            <BsCloudUploadFill className="nav-icon" />
+                            <BsCloudUpload className="nav-icon" />
                             <span className="nav-text">توثيق الأعمال</span>
                         </Link>
                         <Link href="/about" className='link'>

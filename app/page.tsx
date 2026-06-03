@@ -7,6 +7,7 @@ import { BsPlayFill, BsStarFill, BsCardChecklist, BsPersonPlusFill } from 'react
 import { API_BASE_URL } from '@/service/apiConfig';
 import landingBg from '@/imgs/landing-bg.png';
 import logo from '@/imgs/logo.png';
+import Hlogo from '@/imgs/Hlogo.png';
 import ChatBot from "@/components/chatbot/chatbot";
 import VideoFooter from "@/components/video-footer/video-footer";
 import "./mainPage.css"
@@ -108,7 +109,7 @@ export default function LandingPage() {
               {/* Left Side: Description */}
               <div className="description-left">
                 <p className="description-txt">
-                  منصة رقمية تهدف إلى تحفيز طلاب الجامعات على المشاركة في العمل التطوعي وتوثيق إنجازاتهم المجتمعية بأسلوب تفاعلي ومحفز.
+                  منصة رقمية تهدف إلى تحفيز الشباب على المشاركة في العمل التطوعي وتوثيق إنجازاتهم المجتمعية بأسلوب تفاعلي ومحفز.
                 </p>
               </div>
             </div>
@@ -197,6 +198,20 @@ export default function LandingPage() {
           </div>
         </div>
       </main>
+
+      {/* Small Footer */}
+      <footer className="landing-small-footer">
+          <div className="cooperation-section">
+              <div className="coop-text">
+                  <span>نفتخر بأن هذه المنصة تم إطلاقها بالتعاون المثمر مع </span>
+                  <span className="highlight-text">مؤسسة حياة كريمة </span>
+                  <span>لتعزيز روح التطوع وخدمة المجتمع.</span>
+              </div>
+              <Image src={Hlogo} alt="Hayah Karema logo" className="hk-logo" />
+          </div>
+          <p>© {new Date().getFullYear()} Egy Hero. جميع الحقوق محفوظة.</p>
+      </footer>
+
       <VideoFooter />
     </div>
   );

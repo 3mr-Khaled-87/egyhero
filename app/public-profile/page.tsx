@@ -6,6 +6,7 @@ import { BsTrophyFill, BsPersonCircle } from "react-icons/bs";
 import { useSearchParams } from 'next/navigation';
 import { API_BASE_URL } from '@/service/apiConfig';
 import ChatBot from "@/components/chatbot/chatbot";
+import ProfileImage from '@/components/profile-image/profile-image';
 
 interface UserPost {
   id: number;
@@ -185,7 +186,11 @@ function PublicProfileContent() {
                     )}
                     <div className="post-content">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                         <h3 className="post-activity" style={{ margin: 0 }}>{post.activity_name}</h3>
+                        <ProfileImage 
+                          url={userImage} 
+                          size={35} 
+                        />
+                        <h3 className="post-activity" style={{ margin: 0 }}>{post.activity_name}</h3>
                       </div>
                       <p className="post-desc">{post.description}</p>
                       <div className="post-meta">

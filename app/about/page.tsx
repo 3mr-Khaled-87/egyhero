@@ -1,6 +1,8 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from '@/components/header/header';
+import Hlogo from '@/imgs/Hlogo.png';
 import './about.css';
 
 const supervisor = {
@@ -148,13 +150,23 @@ export default function AboutPage() {
                     />
                 </section>
 
-                {/* Footer Quote */}
-                <section className="about-footer-quote">
-                    <blockquote>
-                        &quot;خيرُ الناسِ أنفعُهم للناس&quot;
-                    </blockquote>
-                    <p>معًا نصنع فارقاً ❤️</p>
-                </section>
+                {/* Footer Quote & Footer */}
+                <footer className="about-footer-quote">
+                    <div className="quote-content">
+                        <blockquote>
+                            &quot;خيرُ الناسِ أنفعُهم للناس&quot;
+                        </blockquote>
+                        <p>معًا نصنع فارقاً ❤️</p>
+                    </div>
+                    
+                    <div className="small-footer-bottom">
+                        <div className="cooperation-section">
+                            <span>بالتعاون مع مؤسسة حياة كريمة</span>
+                            <Image src={Hlogo} alt="Hayah Karema logo" className="hk-logo" />
+                        </div>
+                        <p>© {new Date().getFullYear()} Egy Hero. جميع الحقوق محفوظة.</p>
+                    </div>
+                </footer>
             </main>
         </>
     );
