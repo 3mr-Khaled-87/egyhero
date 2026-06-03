@@ -43,7 +43,8 @@ export default function PerfectLeaderboard() {
         }
       });
       if (!res.ok) throw new Error("فشل الاتصال بالسيرفر");
-      const posts = await res.json();
+      const rawPosts = await res.json();
+      const posts = Array.isArray(rawPosts) ? rawPosts : (rawPosts.results || []);
       
       if (Array.isArray(posts) && posts.length > 0) {
         // Calculate points dynamically from approved posts only

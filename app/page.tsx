@@ -50,7 +50,8 @@ export default function LandingPage() {
       try {
         const res = await fetch(`${API_BASE_URL}/volunteers/`);
         if (!res.ok) throw new Error("Failed to fetch stats");
-        const data = await res.json();
+        const rawData = await res.json();
+        const data = Array.isArray(rawData) ? rawData : (rawData.results || []);
 
         const uniqueUsers = new Set(data.map((p: VolunteerPost) => p.user)).size;
         const approvedWorks = data.filter((p: VolunteerPost) => p.status === 'approved').length;

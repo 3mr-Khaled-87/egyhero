@@ -115,7 +115,7 @@ function ProfileContent() {
       });
       if (portRes.ok) {
         const portData = await portRes.json();
-        setPosts(Array.isArray(portData) ? portData : []);
+        setPosts(Array.isArray(portData) ? portData : (portData.results || []));
       }
     } catch (err) {
       console.log(err);

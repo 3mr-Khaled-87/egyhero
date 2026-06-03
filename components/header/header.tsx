@@ -88,7 +88,8 @@ export default function Header() {
                     if (!res.ok) throw new Error("Notifications not ok");
                     return res.json();
                 })
-                .then(data => {
+                .then(rawData => {
+                    const data = Array.isArray(rawData) ? rawData : (rawData.results || []);
                     if (Array.isArray(data)) {
                         setNotifications(data);
                         setUnreadCount(data.filter((n: NotificationItem) => n.is_read === false).length || data.length);

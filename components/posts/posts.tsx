@@ -131,6 +131,8 @@ function getComments(postId: number) {
     }).then(res => {
         if (!res.ok) throw new Error(`Comments error: ${res.status}`);
         return res.json();
+    }).then(rawData => {
+        return Array.isArray(rawData) ? rawData : (rawData.results || []);
     }).catch(err => {
         console.error(`Failed to fetch comments for post ${postId}:`, err);
         return [];
@@ -177,10 +179,9 @@ export default function Posts() {
     useEffect(() => {
         const localLikes = getLocalLikes();
 
-        getPosts().then(data => {
-            const approvedPosts = Array.isArray(data)
-                ? data.filter((post: UsersPost & { status?: string }) => post.status === 'approved')
-                : []
+        getPosts().then(rawData => {
+            const data = Array.isArray(rawData) ? rawData : (rawData.results || []);
+            const approvedPosts = data.filter((post: UsersPost & { status?: string }) => post.status === 'approved');
             setAllPosts(approvedPosts)
 
             const initialReactions: { [key: number]: { like: boolean } } = {};

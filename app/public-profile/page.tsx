@@ -55,7 +55,8 @@ function PublicProfileContent() {
         });
 
         if (res.ok) {
-          const allPosts = await res.json();
+          const rawPosts = await res.json();
+          const allPosts = Array.isArray(rawPosts) ? rawPosts : (rawPosts.results || []);
           if (Array.isArray(allPosts)) {
             const userPosts = allPosts.filter(p => p.user === targetUser);
             
