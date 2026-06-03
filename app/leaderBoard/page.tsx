@@ -2,11 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Header from "@/components/header/header";
-import Footer from "@/components/footer/footer";
 import "./leaderBoard.css";
 import { 
   BsPersonCircle, 
-  BsTrophyFill, 
   BsStarFill, 
   BsChevronLeft
 } from "react-icons/bs";
@@ -14,12 +12,16 @@ import {
 import { API_BASE_URL } from "@/service/apiConfig";
 import ChatBot from "@/components/chatbot/chatbot";
 
-const API_URL = `${API_BASE_URL}/leaderboard/`;
-
 interface User {
   id: number;
   username: string;
   total_points: number;
+}
+
+interface VolunteerPost {
+  user: string;
+  status: 'pending' | 'approved' | 'rejected';
+  points?: number;
 }
 
 export default function PerfectLeaderboard() {
@@ -31,9 +33,8 @@ export default function PerfectLeaderboard() {
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      // Fetch posts instead of the buggy leaderboard endpoint
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API_BASE_URL}/volunteers`, {
+      const res = await fetch(`${API_BASE_URL}/volunteers/`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -47,7 +48,7 @@ export default function PerfectLeaderboard() {
       if (Array.isArray(posts) && posts.length > 0) {
         // Calculate points dynamically from approved posts only
         const pointsMap = new Map<string, number>();
-        posts.forEach((post: any) => {
+        posts.forEach((post: VolunteerPost) => {
             if (post.status === 'approved') {
                 pointsMap.set(post.user, (pointsMap.get(post.user) || 0) + (post.points || 0));
             }

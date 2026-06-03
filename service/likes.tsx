@@ -17,7 +17,7 @@ export const toggleLike = async (postId: number) => {
         const data = await res.json();
         if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
         return data; 
-    } catch (e) {
+    } catch {
         if (!res.ok) throw new Error("حدث خطأ أثناء تسجيل الإعجاب");
         return { success: true };
     }

@@ -3,35 +3,37 @@
   Primary layout is handled via style jsx in posts.tsx for 3-column scrollable design.
 */
 
-.allPosts{
-    width: 100%; /* Column width controlled by parent in posts.tsx */
+.allPosts {
+    width: 100%;
+    /* Column width controlled by parent in posts.tsx */
     height: max-content;
     margin: 20px auto;
     display: flex;
     flex-direction: column;
-    align-items:center ;
+    align-items: center;
     color: green;
 }
 
-.postsDiv{
+.postsDiv {
     width: 100%;
-    max-width: 600px;
-    padding: 25px;
+    max-width: 580px;
+    padding: 20px;
     border: solid 1.5px #e2e8f0;
     border-radius: 20px;
     position: relative;
     margin-bottom: 30px;
     background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+    transform: translateY(-5px);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .postsDiv:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.postsDiv .points{
+.postsDiv .points {
     position: absolute;
     top: 20px;
     left: 20px;
@@ -45,31 +47,36 @@
     color: #28a745;
     font-weight: bold;
 }
-.points-count{
+
+.points-count {
     font-size: 18px;
 }
-.postsDiv .personDetails{
+
+.postsDiv .personDetails {
     display: flex;
     align-items: center;
     gap: 15px;
     margin-bottom: 20px;
 }
-.postsDiv .personDetails .personName{
+
+.postsDiv .personDetails .personName {
     margin: 0;
     font-weight: 800;
     color: #1e293b;
-} 
-.postsDiv .postDetails .postDesc{
+}
+
+.postsDiv .postDetails .postDesc {
     width: 100%;
     margin-bottom: 15px;
     color: #475569;
     font-size: 16px;
     line-height: 1.6;
 }
-.postsDiv .postDetails .postImage{
+
+.postsDiv .postDetails .postImage {
     width: 100% !important;
     height: auto !important;
-    max-height: 400px;
+    max-height: 320px;
     border-radius: 12px;
     object-fit: cover;
 }
@@ -125,7 +132,9 @@
     animation: shimmer 1.4s infinite;
 }
 
-.skeleton-line.short { width: 65%; }
+.skeleton-line.short {
+    width: 65%;
+}
 
 .skeleton-image {
     width: 100%;
@@ -138,8 +147,13 @@
 }
 
 @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 /* Empty Feed State */
@@ -193,8 +207,15 @@
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* First User Badge */
@@ -254,6 +275,13 @@
 
 /* Animations */
 @keyframes slideUp {
-    from { transform: translate(-50%, 100%); opacity: 0; }
-    to { transform: translate(-50%, 0); opacity: 1; }
+    from {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
 }

@@ -1,9 +1,8 @@
 'use client'
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import Header from "@/components/header/header";
-import { BsPersonCircle, BsGearFill, BsTrophyFill, BsTelephoneFill, BsEnvelopeFill, BsGeoAltFill } from "react-icons/bs";
-import Image from 'next/image';
+import { BsGearFill, BsTrophyFill, BsTelephoneFill, BsEnvelopeFill, BsGeoAltFill } from "react-icons/bs";
 import { useSearchParams } from 'next/navigation';
 import { API_BASE_URL } from '@/service/apiConfig';
 import ChatBot from "@/components/chatbot/chatbot";
@@ -61,10 +60,10 @@ function ProfileContent() {
   const searchParams = useSearchParams();
   const targetPostId = searchParams.get('post');
 
-  const showNotify = (msg: string, type: 'success' | 'error' = 'success') => {
+  const showNotify = useCallback((msg: string, type: 'success' | 'error' = 'success') => {
     setNotification({ msg, type });
     setTimeout(() => setNotification(null), 3000);
-  };
+  }, []);
 
   const handleDeletePost = async (postId: number) => {
     setConfirmModal({
@@ -83,7 +82,7 @@ function ProfileContent() {
               } else {
                 throw new Error("Failed to delete");
               }
-            } catch (err) {
+            } catch {
               showNotify("حدث خطأ أثناء مسح العمل", "error");
             }
             setConfirmModal(null);
@@ -91,11 +90,7 @@ function ProfileContent() {
     });
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     const token = localStorage.getItem("token");
     if (!token) {
@@ -128,7 +123,11 @@ function ProfileContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showNotify]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     if (!loading && targetPostId && posts.length > 0) {
@@ -207,9 +206,10 @@ function ProfileContent() {
         if (errorData.detail) errorMsg = errorData.detail;
         throw new Error(errorMsg);
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
-      showNotify(err.message || "حدث خطأ غير متوقع", "error");
+      const msg = err instanceof Error ? err.message : "حدث خطأ غير متوقع";
+      showNotify(msg, "error");
     } finally {
       setSaving(false);
     }

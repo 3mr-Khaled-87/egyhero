@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './daily-toast.css';
 import { BsQuote } from 'react-icons/bs';
 
@@ -260,15 +260,19 @@ const content: ContentItem[] = [
 ];
 
 export default function DailyToast() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
   const [displayedContent, setDisplayedContent] = useState<ContentItem>(content[0]);
 
-  useEffect(() => {
-    // Initial show on mount
+  const showNextContent = useCallback(() => {
+    setDisplayedContent(prev => {
+      const currentIdx = content.findIndex(c => c.id === prev.id);
+      const nextIndex = (currentIdx + 1) % content.length;
+      return content[nextIndex];
+    });
     setIsVisible(true);
-    setDisplayedContent(content[0]);
+  }, []);
 
+  useEffect(() => {
     // Hide after 5 seconds
     const hideTimer = setTimeout(() => {
       setIsVisible(false);
@@ -276,26 +280,19 @@ export default function DailyToast() {
 
     // Show next content every 2 minutes
     const cycleTimer = setInterval(() => {
-      setCurrentIndex((prev) => {
-        const nextIndex = (prev + 1) % content.length;
-        setDisplayedContent(content[nextIndex]);
-        return nextIndex;
-      });
-      setIsVisible(true);
+      showNextContent();
 
-      // Hide after 5 seconds
-      const hideTimer = setTimeout(() => {
+      // Hide after 10 seconds
+      setTimeout(() => {
         setIsVisible(false);
       }, 10000);
-
-      return () => clearTimeout(hideTimer);
     }, 2 * 60 * 1000); // 2 minutes
 
     return () => {
       clearTimeout(hideTimer);
       clearInterval(cycleTimer);
     };
-  }, []);
+  }, [showNextContent]);
 
   const getTypeColor = (type: string) => {
     switch (type) {

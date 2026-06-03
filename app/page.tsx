@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { BsPlayFill, BsStarFill, BsCardChecklist, BsPersonPlusFill } from 'react-icons/bs';
@@ -10,9 +8,14 @@ import { API_BASE_URL } from '@/service/apiConfig';
 import landingBg from '@/imgs/landing-bg.png';
 import logo from '@/imgs/logo.png';
 import ChatBot from "@/components/chatbot/chatbot";
-import DailyToast from "@/components/daily-toast/daily-toast";
 import VideoFooter from "@/components/video-footer/video-footer";
 import "./mainPage.css"
+
+interface VolunteerPost {
+  user: string;
+  status: 'pending' | 'approved' | 'rejected';
+  points?: number;
+}
 
 export default function LandingPage() {
   const router = useRouter();
@@ -28,11 +31,11 @@ export default function LandingPage() {
     // ── Pre-mount Check ──────────────────────────────────────────
     const searchParams = new URLSearchParams(window.location.search);
     const isPreview = searchParams.get('preview') === 'true';
-    
+
     const hasSeenWelcome = typeof window !== 'undefined' && localStorage.getItem('hasSeenWelcome');
 
     // Show landing page on first visit ALWAYS (regardless of login state)
-    
+
     // Only redirect to home if they've been here before
     if (!isPreview && hasSeenWelcome) {
       router.replace('/home');
@@ -48,11 +51,11 @@ export default function LandingPage() {
         const res = await fetch(`${API_BASE_URL}/volunteers/`);
         if (!res.ok) throw new Error("Failed to fetch stats");
         const data = await res.json();
-        
-        const uniqueUsers = new Set(data.map((p: any) => p.user)).size;
-        const approvedWorks = data.filter((p: any) => p.status === 'approved').length;
-        const totalPoints = data.reduce((acc: number, p: any) => acc + (p.points || 0), 0);
-        
+
+        const uniqueUsers = new Set(data.map((p: VolunteerPost) => p.user)).size;
+        const approvedWorks = data.filter((p: VolunteerPost) => p.status === 'approved').length;
+        const totalPoints = data.reduce((acc: number, p: VolunteerPost) => acc + (p.points || 0), 0);
+
         setStats({
           heroes: uniqueUsers,
           works: approvedWorks,
@@ -80,15 +83,15 @@ export default function LandingPage() {
       <section className="hero-landing">
         <span className='overlay'></span>
         <div className="bg-overlay">
-          <Image 
-            src={landingBg} 
-            alt="Background" 
-            fill 
-            style={{ objectFit: 'cover' }} 
-            priority 
+          <Image
+            src={landingBg}
+            alt="Background"
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
           />
         </div>
-        
+
         <div className="hero-inner">
           <div className="header-branding">
             <div className="branding-row">
@@ -112,14 +115,14 @@ export default function LandingPage() {
             <div className="cta-container">
               {isLoggedIn ? (
                 <>
-                  <button 
-                    onClick={() => markSeenAndNavigate('/home')} 
+                  <button
+                    onClick={() => markSeenAndNavigate('/home')}
                     className="yellow-pill-btn"
                   >
                     🏠 استكشف الأعمال
                   </button>
-                  <button 
-                    onClick={() => markSeenAndNavigate('/uploadWorks')} 
+                  <button
+                    onClick={() => markSeenAndNavigate('/uploadWorks')}
                     className="secondary-pill-btn"
                   >
                     ✨ وثّق عملك الآن
@@ -127,14 +130,14 @@ export default function LandingPage() {
                 </>
               ) : (
                 <>
-                  <button 
-                    onClick={() => markSeenAndNavigate('/register')} 
+                  <button
+                    onClick={() => markSeenAndNavigate('/register')}
                     className="yellow-pill-btn"
                   >
                     إبدأ رحلتك
                   </button>
-                  <button 
-                    onClick={() => markSeenAndNavigate('/home')} 
+                  <button
+                    onClick={() => markSeenAndNavigate('/home')}
                     className="secondary-pill-btn"
                   >
                     تصفح كضيف
@@ -151,15 +154,15 @@ export default function LandingPage() {
         {/* Video Placeholder */}
         <div className="video-box-container">
           <div className="dashed-video-box">
-             <div className="play-icon-circle">
-                <BsPlayFill size={50} color="#1b5e20" />
-             </div>
+            <div className="play-icon-circle">
+              <BsPlayFill size={50} color="#1b5e20" />
+            </div>
           </div>
         </div>
 
         {/* Stats Row */}
         <div className="stats-row-container">
-           {/* بطل مشارك */}
+          {/* بطل مشارك */}
           <div className="stat-card-gold">
             <div className="stat-icon-gold">
               <BsPersonPlusFill size={55} />

@@ -1,574 +1,402 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Beiruti:wght@200..900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Beiruti:wght@200..900&family=Ropa+Sans:ital@0;1&display=swap');
-*{
-    transition: 0.2s ease;
+* {
+    transition: all 0.25s ease;
+    box-sizing: border-box;
 }
-header{
+
+.main-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: max-content;
-    padding: 15px 0;
-    z-index: 999;
+    height: 80px;
+    padding: 0 30px;
+    z-index: 1000;
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
-    background-color: rgba(255,255,255, 0.1);
-    border-bottom: 1px solid #eee;
-    box-shadow: 1px 1px 15px #eee;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
 }
-.responseve{
-    width: 80%;
+
+.header-section-right {
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    justify-content: center; /* Center the nav links */
+    flex: 1;
+    order: 2; /* Middle position */
 }
-.links{
+
+.header-section-center {
     display: flex;
-    justify-content: space-around;
-    padding: 15px;
-    border-radius: 5px;
-    background-color: green;
-    width: 80%;
-    height: 100%;
-}
-.links .link{
-    text-decoration: none;
-    color: #eee;
-    font-size: 18px;
-    font-weight: 600;
-}
-.links .link:hover{
-    color: rgb(0, 218, 0);
-    text-decoration: underline;
-}
-.logo{
-    display: flex;
-    justify-content: space-around;
     align-items: center;
-    text-align: center;
-    width: 20%;
+    justify-content: flex-start; /* Align logo to the right in RTL */
+    flex: 1;
+    order: 1; /* First position (rightmost) */
 }
-.menu-trigger, .profile-trigger {
-    display: none;
+
+.header-section-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+    order: 3; /* Last position (leftmost) */
 }
-.logo-center-side {
+
+/* Logo link styling */
+.logo-link {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20%;
-}
-.logo-center-side img{
-    width: 90px;
-    height: auto;
-}
-.logo-center-side h3 , .logo-center-side .res-icon{
-    display: none;
-}
-.mobile-profile-img {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #28a745;
-}
-
-.desktop-profile-only {
-    display: flex;
-}
-
-.register{
-    width: 20%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: max-content;
-    padding: 15px;
-    text-align: center;
-}
-.register .login , .register .sign-up{
-    width: max-content;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    color: green;
-    font-size: 16px;
-    font-weight: 600;
-    border: 1px solid rgb(0, 255, 0);
-}
-
-.register .login{
-    background-color: rgb(0, 255, 0);
-}
-.register .sign-up{
-    border: 1px solid rgb(0, 255, 0);
-}
-.register .login:hover{
-    background-color: transparent;
-}
-.register .sign-up:hover{
-    background-color: rgb(0, 255, 0);
-}
-
-.profile-trigger {
-    display: flex;
-    align-items: center;
     gap: 12px;
+    text-decoration: none;
+}
+
+.logo-img-main {
+    width: 85px;
+    height: auto;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-family: 'Beiruti', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #1b5e20;
+    margin: 0;
+}
+
+/* Desktop nav links styling */
+.desktop-nav-links {
+    display: flex;
+    align-items: center;
     width: max-content;
-    padding-left: 15px;
-}
-
-.profile-trigger a {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Large screens (> 1130px) - Restructure header layout */
-@media (min-width: 1131px) {
-    header {
-        justify-content: space-around;
-    }
-
-    .logo {
-        order: 3;
-        flex: 0;
-    }
-
-    .responseve {
-        order: 2;
-        flex: 1;
-        justify-content: center;
-    }
-
-    .profile-trigger {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        padding-left: 0;
-        margin-left: 0;
-    }
-}
-
-@media (max-width: 1130px) {
-    header , .responseve , .links{
-        flex-direction: column;
-    }
-    
-    header{
-        z-index: 998;
-        height: 93px;
-        padding: 0;
-    }
-    .logo{
-        width: 100%;
-        z-index: 999;
-        position: fixed;
-        top: 0;
-        padding: 10px 20px;
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(30px);
-        border-bottom: 1px solid #eee;
-        box-shadow: 1px 1px 15px #eee;
-        border-radius: 15px;
-        justify-content: space-between;
-        direction: rtl;
-        height: 93px; /* Match header height */
-    }
-    .menu-trigger, .profile-trigger {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 40px;
-    }
-    .logo-center-side {
-        flex: 1;
-    }
-    .logo .res-icon , .logo h3{
-        display: block;
-        font-family: "Beiruti"," sans-serif";
-        font-size: 24px;
-        color: green;
-        margin: 0;
-    }
-    .logo .res-icon
-    {
-        font-size: 35px;
-        cursor: pointer;
-    }
-    .logo img {
-        width: 60px;
-    }
-    .desktop-profile-only, .desktop-notifications-only {
-        display: none !important;
-    }
-    .responseve , .links{
-        width: 100%;
-    }
-    .responseve{
-        background-color: #eee;
-        transform: translateY(-120%);
-
-    }
-    .show{
-        transform: translateY(95px);
-        border-radius: 10px;
-        background-color: #eeeeee;
-        border-bottom: 1px solid #eee;
-        box-shadow: 1px 1px 15px #eee;
-        height: max-content;
-        backdrop-filter: blur(10px);
-    }
-    .links{
-        background-color: transparent;
-    }
-    .links .link{
-        color: green;
-        padding: 10px;
-        width: max-content;
-        padding: 5px 20px;
-        margin: 10px;
-        border-radius: 5px;
-    }
-    .register{
-        width: max-content;
-        gap: 25px;
-        flex-wrap: wrap;
-    }
-}
-
-/* Logo Link Styles */
-.logo-center-side a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: inherit;
-    height: 100%;
-}
-
-/* Logged In Profile Container */
-.logged-in-profile-container {
-    display: flex;
-    align-items: center;
     gap: 15px;
 }
 
-/* Mobile Notification Wrapper */
-.mobile-notification-wrapper {
+.desktop-nav-links .link {
+    text-decoration: none;
+    color: #475569;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-icon {
+    display: none;
+    font-size: 20px;
+}
+
+.desktop-nav-links .link:hover {
+    color: #16a34a;
+    background-color: rgba(22, 163, 74, 0.05);
+}
+
+/* User actions container */
+.user-actions-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Register link */
+.register-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    padding: 6px 16px;
+    border-radius: 12px;
+    border: 1.5px solid #22c55e;
+    background-color: rgba(34, 197, 94, 0.05);
+}
+
+.register-link:hover {
+    background-color: #22c55e;
+    transform: translateY(-1px);
+}
+
+.register-link:hover .register-text {
+    color: white;
+}
+
+.register-text {
+    color: #15803d;
+    font-size: 14px;
+    font-weight: 800;
+    font-family: 'Tajawal', sans-serif;
+}
+
+/* Bell & notifications wrapper */
+.notifications-wrapper {
     position: relative;
 }
 
-.mobile-notification-wrapper .bell-icon {
-    cursor: pointer;
-    color: #28a745;
-}
-
-/* Notification Badge */
-.notification-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #dc3545;
-    color: white;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
+.bell-trigger {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    pointer-events: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #f8fafc;
 }
 
-.notification-badge-desktop {
+.bell-trigger:hover {
+    background-color: #f1f5f9;
+}
+
+.bell-icon {
+    color: #64748b;
+}
+
+.bell-trigger:hover .bell-icon {
+    color: #16a34a;
+}
+
+/* Notification badge */
+.notification-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 50%;
     width: 18px;
     height: 18px;
-    font-size: 11px;
-    top: -8px;
-    right: -8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
 }
 
-/* Mobile Notifications Dropdown */
-.mobile-notifications-dropdown {
+/* Dropdown list */
+.notifications-dropdown {
     position: absolute;
-    top: 40px;
+    top: 50px;
     left: 0;
-    width: 280px;
+    width: 320px;
     background-color: white;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    border-radius: 12px;
-    z-index: 1001;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    z-index: 1010;
     overflow: hidden;
-    border: 1px solid #f0f0f0;
+    border: 1px solid #f1f5f9;
 }
 
 .notifications-dropdown-header {
     margin: 0;
-    padding: 12px 15px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-    color: #333;
-    font-weight: bold;
-    text-align: right;
-}
-
-.notifications-dropdown-header-desktop {
     padding: 15px 20px;
-    font-size: 16px;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 15px;
+    color: #1e293b;
+    font-weight: 800;
+    font-family: 'Tajawal', sans-serif;
 }
 
-/* Notifications List Container */
 .notifications-list {
-    max-height: 300px;
+    max-height: 320px;
     overflow-y: auto;
 }
 
-.notifications-list-desktop {
-    max-height: 350px;
-}
-
-/* Empty Notifications Message */
-.empty-notifications {
-    padding: 20px;
-    text-align: center;
-    color: #888;
-    font-size: 13px;
-}
-
-.empty-notifications-desktop {
-    padding: 30px 20px;
-    font-size: 14px;
-}
-
-/* Notification Item */
 .notification-item {
-    padding: 12px 15px;
-    border-bottom: 1px solid #f0f0f0;
-    text-align: right;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f8fafc;
     cursor: pointer;
     display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: flex-end;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.notification-item:hover {
+    background-color: #f8fafc;
 }
 
 .notification-item.unread {
     background-color: #f0fdf4;
 }
 
-.notification-item.read {
-    background-color: white;
-}
-
-.notification-item-desktop {
-    padding: 15px 20px;
-    gap: 12px;
-}
-
-/* Notification Content */
-.notification-content {
-    flex: 1;
+.notification-item.unread:hover {
+    background-color: #ecfdf5;
 }
 
 .notification-text {
     margin: 0;
     font-size: 13px;
-    color: #333;
-}
-
-.notification-text-desktop {
-    font-size: 14px;
+    color: #475569;
+    font-family: 'Tajawal', sans-serif;
+    line-height: 1.5;
 }
 
 .notification-actor {
     font-weight: bold;
-    color: #28a745;
+    color: #16a34a;
 }
 
 .notification-timestamp {
     font-size: 11px;
-    color: #999;
+    color: #94a3b8;
+    font-family: 'Tajawal', sans-serif;
 }
 
-/* Mobile Profile Container */
-.mobile-profile-container {
-    cursor: pointer;
-}
-
-/* Desktop Profile Only */
-.desktop-profile-only {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.desktop-profile-item {
-    cursor: pointer;
-}
-
-/* Desktop Notifications Only */
-.desktop-notifications-only {
-    position: relative;
-}
-
-.desktop-notifications-only .bell-icon {
-    cursor: pointer;
-    color: #28a745;
-}
-
-/* Desktop Notifications Dropdown */
-.desktop-notifications-dropdown {
-    position: absolute;
-    top: 40px;
-    left: -140px;
-    width: 320px;
-    background-color: white;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    border-radius: 12px;
-    z-index: 1000;
-    overflow: hidden;
-    border: 1px solid #f0f0f0;
-}
-
-/* Register Link Styles */
-.register-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.register-text {
-    color: #28a745;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-/* Admin Link */
-.admin-link {
-    color: #28a745;
-    font-weight: bold;
-    text-decoration: none;
-    border: 1px solid #28a745;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-/* Logout Icon */
-.logout-icon {
-    cursor: pointer;
-    color: #dc3545;
-}
-
-/* Desktop Buttons Container */
-.desktop-buttons-container {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-/* Confirm Modal Styles */
-.confirm-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    backdrop-filter: blur(5px);
-}
-
-.confirm-modal-box {
-    background-color: white;
-    padding: 30px;
-    border-radius: 20px;
-    max-width: 400px;
-    width: 90%;
+.empty-notifications {
+    padding: 30px 20px;
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    color: #94a3b8;
+    font-size: 14px;
+    font-family: 'Tajawal', sans-serif;
 }
 
-.confirm-modal-title {
-    margin: 0 0 15px 0;
-    color: #333;
-}
-
-.confirm-modal-message {
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 25px;
-}
-
-.confirm-modal-buttons {
+/* Profile image & Logout styling */
+.profile-item-wrapper {
+    cursor: pointer;
     display: flex;
-    gap: 10px;
+    align-items: center;
+}
+
+.logout-wrapper {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #fff1f2;
 }
 
-.confirm-modal-cancel-btn {
-    padding: 10px 25px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    background-color: #f8f9fa;
-    color: #666;
-    cursor: pointer;
-    font-weight: bold;
+.logout-wrapper:hover {
+    background-color: #ffe4e6;
 }
 
-.confirm-modal-delete-btn {
-    padding: 10px 25px;
-    border-radius: 10px;
-    border: none;
-    background-color: #dc3545;
+.logout-icon {
+    color: #f43f5e;
+}
+
+.admin-link {
+    text-decoration: none;
+    color: #d97706;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: 'Tajawal', sans-serif;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1.5px solid #f59e0b;
+    background-color: rgba(245, 158, 11, 0.05);
+}
+
+.admin-link:hover {
+    background-color: #f59e0b;
     color: white;
-    cursor: pointer;
-    font-weight: bold;
 }
 
-@media (max-width: 480px) {
 
-    .logo .logo-text {
+/* Responsive configurations (Mobile & Tablet) */
+@media (max-width: 1130px) {
+    /* 
+      Flatten the HTML structure using display: contents 
+      so all icons and the logo become direct flex children of .main-header,
+      allowing space-around to evenly distribute them.
+    */
+    .main-header {
+        height: 80px;
+        padding: 0 5px;
+        border-radius: 0;
+        justify-content: space-around;
+        gap: 0;
+    }
+
+    .header-section-center,
+    .header-section-right,
+    .header-section-left,
+    .desktop-nav-links,
+    .user-actions-container {
+        display: contents;
+    }
+
+    /* RTL visual order */
+    .logo-link {
+        order: 1;
+    }
+
+    .desktop-nav-links .link {
+        order: 2;
+    }
+
+    .notifications-wrapper {
+        order: 3;
+    }
+
+    .profile-item-wrapper {
+        order: 4;
+    }
+
+    .logout-wrapper {
+        order: 5;
+    }
+
+    .register-link {
+        order: 6;
+    }
+
+    .logo-img-main {
+        width: 55px;
+    }
+
+    .logo-text, .nav-text, .register-text {
         display: none;
     }
-    .logo {
-        padding: 10px 10px;
+
+    .nav-icon {
+        display: block;
+        font-size: 24px;
+        color: #475569;
     }
-    
-    .profile-trigger {
-        padding-left: 10px;
-        gap: 10px;
-    }
-    
-    .register {
-        width: 100%;
-        padding: 10px 20px;
-        gap: 10px;
+
+    /* Touch targets */
+    .desktop-nav-links .link, .profile-item-wrapper, .logout-wrapper, .bell-trigger {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
         justify-content: center;
-        border-top: 1px solid #ddd;
-        background-color: white;
+        background-color: transparent;
+        border: none;
     }
-    
-    .register .login, .register .sign-up {
-        width: auto;
-        padding: 8px 16px;
-        font-size: 14px;
-        flex: 1;
-        min-width: 120px;
+
+    .desktop-nav-links .link:hover, .logout-wrapper:hover, .bell-trigger:hover {
+        background-color: #f1f5f9;
+        border-radius: 12px;
+    }
+
+    .bell-icon {
+        font-size: 24px;
+        color: #475569;
+    }
+
+    .logout-icon {
+        font-size: 24px;
+        color: #475569;
+    }
+
+    .notifications-dropdown {
+        top: 60px;
+        left: 5px;
+        width: 300px;
     }
 }
-

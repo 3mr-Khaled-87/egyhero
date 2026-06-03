@@ -1,7 +1,6 @@
 'use client'
 
 import { FiArrowLeft, FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi"
-import { BsPersonFill } from "react-icons/bs"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
@@ -39,15 +38,22 @@ export default function RegisterPage() {
         try {
             await registerUser(form)
             router.push("/login")
-        } catch (error: any) {
-            console.error(error)
-            if (error.response?.data?.email) {
-                setError("هذا البريد الإلكتروني مسجل بالفعل")
-            } else if (error.response?.data?.username) {
-                setError("اسم المستخدم هذا مأخوذ بالفعل")
-            } else {
-                setError("حدث خطأ أثناء الإنشاء. يرجى التأكد من أن البريد الإلكتروني أو اسم المستخدم غير مكرر، وأن كلمة المرور قوية.")
+        } catch (err) {
+            console.error(err)
+            let parsedErrorMsg = ""
+            if (err instanceof Error) {
+                try {
+                    const data = JSON.parse(err.message)
+                    if (data.email) {
+                        parsedErrorMsg = "هذا البريد الإلكتروني مسجل بالفعل"
+                    } else if (data.username) {
+                        parsedErrorMsg = "اسم المستخدم هذا مأخوذ بالفعل"
+                    }
+                } catch {
+                    // Message is not JSON
+                }
             }
+            setError(parsedErrorMsg || "حدث خطأ أثناء الإنشاء. يرجى التأكد من أن البريد الإلكتروني أو اسم المستخدم غير مكرر، وأن كلمة المرور قوية.")
         } finally {
             setLoading(false)
         }

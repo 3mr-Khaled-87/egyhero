@@ -42,7 +42,7 @@ export default function ChatBot() {
     {
       from: 'ai',
       text: 'أهلاً بك في مساعد إيجي هيرو! 👋\nيمكنك الضغط على أي سؤال أدناه للحصول على إجابة، أو الضغط على "تبليغ عن مشكلة" للتواصل معنا.',
-      time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+      time: ""
     }
   ]);
   const [input, setInput] = useState('');
@@ -50,14 +50,21 @@ export default function ChatBot() {
   const [isComplaintMode, setIsComplaintMode] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Hide on auth pages
-  if (pathname === '/login' || pathname === '/register') return null;
-
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    setMessages(prev => prev.map((msg, idx) => idx === 0 ? {
+      ...msg,
+      time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+    } : msg));
+  }, []);
+
   useEffect(() => { scrollToBottom(); }, [messages, isTyping]);
+
+  // Hide on auth pages — moved AFTER all hooks to fix rules-of-hooks
+  if (pathname === '/login' || pathname === '/register') return null;
 
   const handleQuestionClick = (q: typeof PREDEFINED_QUESTIONS[0]) => {
     if (isTyping) return;
@@ -96,7 +103,7 @@ export default function ChatBot() {
     setIsTyping(true);
 
     try {
-      const res = await fetch('https://egyhero.social/api/docs/Complaint/', {
+      await fetch('https://egyhero.social/api/docs/Complaint/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: complaintText })
@@ -110,7 +117,7 @@ export default function ChatBot() {
         text: 'شكراً لك! تم إرسال بلاغك للإدارة بنجاح. سنقوم بمراجعته في أقرب وقت.',
         time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
       }]);
-    } catch (err) {
+    } catch {
       setIsTyping(false);
       setMessages(prev => [...prev, {
         from: 'ai',
@@ -159,7 +166,7 @@ export default function ChatBot() {
       } else {
         throw new Error("Server error");
       }
-    } catch (err) {
+    } catch {
       setIsTyping(false);
       setMessages(prev => [...prev, {
         from: 'ai',
@@ -259,7 +266,7 @@ export default function ChatBot() {
 
             {isComplaintMode && (
               <div className="complaint-notice">
-                <p>أنت الآن في وضع "تبليغ عن مشكلة". يرجى كتابة تفاصيل المشكلة وسنرسلها للإدارة.</p>
+                <p>أنت الآن في وضع &quot;تبليغ عن مشكلة&quot;. يرجى كتابة تفاصيل المشكلة وسنرسلها للإدارة.</p>
                 <button className="cancel-complaint" onClick={() => setIsComplaintMode(false)}>إلغاء</button>
               </div>
             )}

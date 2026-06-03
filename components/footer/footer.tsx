@@ -1,5 +1,4 @@
 'use client'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaEnvelope  } from "react-icons/fa"
 import { FaPhone   } from "react-icons/fa"
 import Image from 'next/image';
@@ -27,7 +26,7 @@ export default function Footer(){
                                 <h3>لينكات سريعة</h3>
                                 <Link href="/" className='link'>الرئيسية</Link>
                                 <Link href="/leaderBoard" className='link'>لوحة المتصدرين</Link>
-                                <Link href="/uploadWorks" className='link'>توثسق الأعمال</Link>
+                                <Link href="/uploadWorks" className='link'>توثيق الأعمال</Link>
                             </div>
                         </div>
 

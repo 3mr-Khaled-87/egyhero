@@ -1,9 +1,7 @@
 'use client'
 
 import { FiArrowLeft, FiMail, FiLock, FiLogIn, FiEye, FiEyeOff } from "react-icons/fi"
-import { BsPersonFill } from "react-icons/bs"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { userLogin } from "@/service/auth"
 import Image from "next/image"
@@ -12,7 +10,6 @@ import logo from "@/imgs/logo.png"
 import styles from "./login.module.css"
 
 export default function LoginPage() {
-    const router = useRouter()
     const [form, setForm] = useState({
         email: "",
         password: "",
@@ -43,8 +40,8 @@ export default function LoginPage() {
                     window.location.href = "/home"
                 }
             }
-        } catch (error: any) {
-            console.error(error)
+        } catch (err) {
+            console.error(err)
             setError("خطأ في البريد الإلكتروني أو كلمة المرور. يرجى التأكد من صحة البيانات.")
         } finally {
             setLoading(false)

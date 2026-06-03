@@ -9,7 +9,7 @@ import ChatBot from "@/components/chatbot/chatbot";
 export default function UploadWorksPage() {
     const [activityName, setActivityName] = useState("");
     const [description, setDescription] = useState("");
-    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [imageFiles, setImageFiles] = useState<File[]>([]);
     const [videoFile, setVideoFile] = useState<File | null>(null);
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState<{msg: string, type: 'success' | 'error'} | null>(null);
@@ -37,12 +37,26 @@ export default function UploadWorksPage() {
             return;
         }
 
+        // Validation for sizes
+        if (imageFiles.some(f => f.size > 2 * 1024 * 1024)) {
+            showNotify("عفواً، حجم الصورة يجب أن يكون أقل من 2 ميجابايت", "error");
+            return;
+        }
+        if (videoFile && videoFile.size > 5 * 1024 * 1024) {
+            showNotify("عفواً، حجم الفيديو يجب أن يكون أقل من 5 ميجابايت", "error");
+            return;
+        }
+
         setLoading(true);
 
         const formData = new FormData();
         formData.append("activity_name", activityName);
         formData.append("description", description);
-        if (imageFile) formData.append("image1", imageFile);
+        
+        imageFiles.slice(0, 4).forEach((file, index) => {
+            formData.append(`image${index + 1}`, file);
+        });
+        
         if (videoFile) formData.append("video", videoFile);
 
         try {
@@ -60,7 +74,7 @@ export default function UploadWorksPage() {
                 // Clear form
                 setActivityName("");
                 setDescription("");
-                setImageFile(null);
+                setImageFiles([]);
                 setVideoFile(null);
                 
                 setTimeout(() => {
@@ -69,7 +83,7 @@ export default function UploadWorksPage() {
             } else {
                 throw new Error("فشل الرفع");
             }
-        } catch (error) {
+        } catch {
             showNotify("حدث خطأ أثناء الرفع، تأكد من الاتصال وجرب مرة أخرى", "error");
         } finally {
             setLoading(false);
@@ -102,7 +116,6 @@ export default function UploadWorksPage() {
                                 <option value="بيئي">نشاط بيئي</option>
                                 <option value="طبي">نشاط طبي</option>
                                 <option value="تعليمي">نشاط تعليمي</option>
-                                <option value="أخرى">أخرى</option>
                             </select>
                         </div>
 
@@ -125,14 +138,24 @@ export default function UploadWorksPage() {
                                 <input 
                                     type="file" 
                                     accept="image/*" 
+                                    multiple
                                     ref={imageRef} 
-                                    onChange={(e) => setImageFile(e.target.files?.[0] || null)} 
+                                    onChange={(e) => {
+                                        const files = Array.from(e.target.files || []);
+                                        if (files.length > 4) {
+                                            showNotify("بحد أقصى 4 صور فقط", "error");
+                                            setImageFiles(files.slice(0, 4));
+                                        } else {
+                                            setImageFiles(files);
+                                        }
+                                    }} 
                                     hidden 
                                 />
-                                <BsCardImage size={40} color={imageFile ? "#28a745" : "#6c757d"} />
-                                <span className={imageFile ? "success-text" : "normal-text"}>
-                                    {imageFile ? imageFile.name : "إرفاق صورة العمل"}
+                                <BsCardImage size={40} color={imageFiles.length > 0 ? "#28a745" : "#6c757d"} />
+                                <span className={imageFiles.length > 0 ? "success-text" : "normal-text"}>
+                                    {imageFiles.length > 0 ? `تم اختيار ${imageFiles.length} صورة` : "إرفاق صورة العمل"}
                                 </span>
+                                <span style={{ fontSize: '12px', color: '#6c757d' }}>أقل من 2 ميجا، بحد أقصى 4 صور</span>
                             </div>
 
                             <div 
@@ -150,6 +173,7 @@ export default function UploadWorksPage() {
                                 <span className={videoFile ? "success-text" : "normal-text"}>
                                     {videoFile ? videoFile.name : "إرفاق فيديو (اختياري)"}
                                 </span>
+                                <span style={{ fontSize: '12px', color: '#6c757d' }}>أقل من 5 ميجا، فيديو واحد فقط</span>
                             </div>
                         </div>
 
