@@ -16,8 +16,7 @@
 }
 
 .home-sidebar {
-  width: 320px;
-  flex-shrink: 0;
+  display: none;
 }
 
 /* Tablet and smaller */

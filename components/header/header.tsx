@@ -1,15 +1,18 @@
 'use client'
-import { BsBell as BsBellIcon, BsBoxArrowRight as BsLogoutIcon, BsList as BsListIcon, BsX as BsCloseIcon, BsHouse, BsTrophy, BsCloudUpload, BsInfoCircle } from "react-icons/bs";
+import { BsBell as BsBellIcon, BsHouse, BsTrophy, BsCloudUpload, BsInfoCircle } from "react-icons/bs";
 import Image from 'next/image';
 import logo from "@/imgs/logo.png";
 import Link from 'next/link';
 import './header.css'
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { API_BASE_URL } from '@/service/apiConfig';
 import ProfileImage from '../profile-image/profile-image';
 
 interface NotificationItem {
+    target_id: number | undefined;
+    object_id?: number | string;
     id: number;
     actor?: string;
     actor_name?: string;
@@ -34,10 +37,17 @@ export default function Header() {
     const [profileImage, setProfileImage] = useState<string | null>(null)
 
     const notificationRef = useRef<HTMLDivElement>(null);
+    const bellRef = useRef<HTMLDivElement>(null);
+    const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+            const target = event.target as Node;
+            const dropdown = document.getElementById('notif-portal-dropdown');
+            if (
+                notificationRef.current && !notificationRef.current.contains(target) &&
+                dropdown && !dropdown.contains(target)
+            ) {
                 setShowNotifications(false);
             }
         }
@@ -72,7 +82,12 @@ export default function Header() {
                 })
                 .then(data => {
                     if (data && (data.image || data.profile_image)) {
-                        setProfileImage(data.image || data.profile_image);
+                        const imgUrl = data.image || data.profile_image;
+                        setProfileImage(imgUrl);
+                        localStorage.setItem("myProfileImage", imgUrl);
+                    }
+                    if (data && data.username) {
+                        localStorage.setItem("myUsername", data.username);
                     }
                     if (data && data.role === "admin") {
                         setIsAdmin(true);
@@ -91,8 +106,17 @@ export default function Header() {
                 .then(rawData => {
                     const data = Array.isArray(rawData) ? rawData : (rawData.results || []);
                     if (Array.isArray(data)) {
-                        setNotifications(data);
-                        setUnreadCount(data.filter((n: NotificationItem) => n.is_read === false).length || data.length);
+                        const localReadIds = JSON.parse(localStorage.getItem("readNotificationIds") || "[]");
+                        
+                        const mergedData = data.map((n: NotificationItem) => {
+                            if (n.id && localReadIds.includes(n.id)) {
+                                return { ...n, is_read: true };
+                            }
+                            return n;
+                        });
+
+                        setNotifications(mergedData);
+                        setUnreadCount(mergedData.filter((n: NotificationItem) => n.is_read === false).length);
                     }
                 })
                 .catch(err => console.log("Failed to fetch notifications", err));
@@ -118,9 +142,24 @@ export default function Header() {
         return "تفاعل معك";
     };
 
+    const getVerbIcon = (n: NotificationItem) => {
+        const verb = (n.verb || "").toLowerCase();
+        if (verb.includes("like")) return "❤️";
+        if (verb.includes("comment")) return "💬";
+        if (verb.includes("solve") || verb.includes("resolved")) return "✅";
+        return "🔔";
+    };
+
     const markNotificationAsRead = (id: number) => {
         const notif = notifications.find(n => n.id === id);
         if (notif && !notif.is_read) {
+            // Save to localStorage
+            const localReadIds = JSON.parse(localStorage.getItem("readNotificationIds") || "[]");
+            if (!localReadIds.includes(id)) {
+                localReadIds.push(id);
+                localStorage.setItem("readNotificationIds", JSON.stringify(localReadIds));
+            }
+
             // Update UI immediately
             setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
             setUnreadCount(prev => Math.max(0, prev - 1));
@@ -138,6 +177,11 @@ export default function Header() {
     const hundelUserProfile = () => {
         router.push("/profile")
     }
+
+    const sortedNotifications = [...notifications].sort((a, b) => {
+        if (a.is_read === b.is_read) return 0;
+        return a.is_read ? 1 : -1;
+    });
 
     return (
         <>
@@ -184,43 +228,25 @@ export default function Header() {
 
                             {/* Notifications Wrapper */}
                             <div className="notifications-wrapper" ref={notificationRef}>
-                                <div className="bell-trigger" onClick={() => setShowNotifications(!showNotifications)}>
+                                <div
+                                    className="bell-trigger"
+                                    ref={bellRef}
+                                    onClick={() => {
+                                        if (!showNotifications && bellRef.current) {
+                                            const rect = bellRef.current.getBoundingClientRect();
+                                            setDropdownPos({
+                                                top: rect.bottom + 8,
+                                                left: rect.left,
+                                            });
+                                        }
+                                        setShowNotifications(prev => !prev);
+                                    }}
+                                >
                                     <BsBellIcon size={24} className="bell-icon" title="الإشعارات" />
                                     {unreadCount > 0 && (
                                         <span className="notification-badge">{unreadCount}</span>
                                     )}
                                 </div>
-
-                                {showNotifications && (
-                                    <div className="notifications-dropdown">
-                                        <h4 className="notifications-dropdown-header">الإشعارات</h4>
-                                        <div className="notifications-list">
-                                            {notifications.length === 0 ? (
-                                                <div className="empty-notifications">لا توجد إشعارات جديدة في الوقت الحالي</div>
-                                            ) : (
-                                                notifications.map((n, idx) => (
-                                                    <div
-                                                        key={n.id || idx}
-                                                        onClick={() => {
-                                                            markNotificationAsRead(n.id || idx);
-                                                            if (n.post_id || n.post) router.push(`/profile?post=${n.post_id || n.post}`);
-                                                            setShowNotifications(false);
-                                                        }}
-                                                        className={`notification-item ${n.is_read ? 'read' : 'unread'}`}
-                                                    >
-                                                        <div className="notification-content">
-                                                            <p className="notification-text">
-                                                                <span className="notification-actor">{getActorName(n)} </span>
-                                                                {getVerbText(n)}
-                                                            </p>
-                                                            {n.created_at && <span className="notification-timestamp">{new Date(n.created_at).toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>}
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
                             </div>
 
                             {/* Profile image trigger */}
@@ -230,16 +256,6 @@ export default function Header() {
                                     size={35}
                                     border="2px solid #28a745"
                                 />
-                            </div>
-
-                            {/* Logout icon */}
-                            <div className="logout-wrapper" title="تسجيل الخروج" onClick={() => {
-                                localStorage.removeItem("token");
-                                localStorage.removeItem("role");
-                                setIsLoggedIn(false);
-                                window.location.href = "/";
-                            }}>
-                                <BsLogoutIcon size={26} className="logout-icon" />
                             </div>
                         </div>
                     ) : (
@@ -251,6 +267,64 @@ export default function Header() {
                 </div>
 
             </header>
+
+            {/* ===== Notification Dropdown PORTAL — rendered outside header DOM ===== */}
+            {showNotifications && typeof document !== 'undefined' && createPortal(
+                <div
+                    id="notif-portal-dropdown"
+                    className="notifications-dropdown"
+                    style={{
+                        position: 'fixed',
+                        top: dropdownPos.top,
+                        left: dropdownPos.left,
+                        zIndex: 99999,
+                    }}
+                >
+                    <h4 className="notifications-dropdown-header">الإشعارات</h4>
+                    <div className="notifications-list">
+                        {sortedNotifications.length === 0 ? (
+                            <div className="empty-notifications">لا توجد إشعارات في الوقت الحالي</div>
+                        ) : (
+                            sortedNotifications.map((n, idx) => (
+                                <div
+                                    key={n.id || idx}
+                                    onClick={() => {
+                                        if (n.id) markNotificationAsRead(n.id);
+                                        const postRef = n.post_id || n.post || n.target_id || n.object_id;
+                                        if (postRef) {
+                                            router.push(`/home?post=${postRef}`);
+                                        } else {
+                                            router.push('/home');
+                                        }
+                                        setShowNotifications(false);
+                                    }}
+                                    className={`notification-item ${n.is_read ? 'read' : 'unread'}`}
+                                >
+                                    <div className="notification-icon-circle">
+                                        {getVerbIcon(n)}
+                                    </div>
+                                    <div className="notification-content">
+                                        <p className="notification-text">
+                                            <span className="notification-actor">{getActorName(n)} </span>
+                                            {getVerbText(n)}
+                                        </p>
+                                        {n.created_at && (
+                                            <span className="notification-timestamp">
+                                                {new Date(n.created_at).toLocaleDateString('ar-EG', {
+                                                    year: 'numeric', month: 'short', day: 'numeric',
+                                                    hour: '2-digit', minute: '2-digit'
+                                                })}
+                                            </span>
+                                        )}
+                                    </div>
+                                    {!n.is_read && <div className="notification-unread-dot" />}
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>,
+                document.body
+            )}
 
             {/* Custom Confirm Modal */}
             {confirmModal && confirmModal.show && (

@@ -29,6 +29,7 @@ export default function PerfectLeaderboard() {
   const [activeTab, setActiveTab] = useState("week");
   const [loading, setLoading] = useState(true);
   const [myUsername, setMyUsername] = useState<string | null>(null);
+  const [myProfileImage, setMyProfileImage] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     try {
@@ -77,19 +78,8 @@ export default function PerfectLeaderboard() {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetch(`${API_BASE_URL}/profile/`, {
-        headers: { "Authorization": `Bearer ${token}` }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.username) {
-          setMyUsername(data.username);
-        }
-      })
-      .catch(err => console.log("Profile fetch err:", err));
-    }
+    setMyUsername(localStorage.getItem("myUsername"));
+    setMyProfileImage(localStorage.getItem("myProfileImage"));
   }, []);
 
   useEffect(() => {
@@ -165,8 +155,16 @@ export default function PerfectLeaderboard() {
                         </div>
                         
                         <div className="user-profile">
-                          <div className="avatar">
-                            <BsPersonCircle />
+                          <div className="avatar" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {isMe && myProfileImage ? (
+                                <img 
+                                    src={myProfileImage.startsWith('http') ? myProfileImage : `https://egyhero.social${myProfileImage.startsWith('/') ? '' : '/'}${myProfileImage}`} 
+                                    alt="My Profile" 
+                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                />
+                            ) : (
+                                <BsPersonCircle style={{ width: '100%', height: '100%', color: '#28a745' }} />
+                            )}
                           </div>
                           <div className="info">
                             <span className="user-name">{isMe ? "أنا (أنت)" : user.username}</span>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import Header from "@/components/header/header";
-import { BsGearFill, BsTrophyFill, BsTelephoneFill, BsEnvelopeFill, BsGeoAltFill } from "react-icons/bs";
+import { BsGearFill, BsTrophyFill, BsTelephoneFill, BsEnvelopeFill, BsGeoAltFill, BsBoxArrowRight, BsTrashFill } from "react-icons/bs";
 import { useSearchParams } from 'next/navigation';
 import { API_BASE_URL } from '@/service/apiConfig';
 import ChatBot from "@/components/chatbot/chatbot";
@@ -236,52 +236,69 @@ function ProfileContent() {
         <div className="profile-wrapper">
           
           {/* Profile Card */}
-          <div className="profile-card glass-panel">
-            <div className="profile-header">
-              <div className="avatar-section">
+          <div className="profile-card glass-panel" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="profile-cover"></div>
+            
+            <div className="profile-header-content">
+              <div className="avatar-wrapper">
                 <ProfileImage 
                   url={profile?.image || profile?.profile_image} 
-                  size={100} 
-                  border="4px solid #28a745"
+                  size={120} 
+                  border="4px solid white"
                 />
-                <h1 className="username">{profile?.username || "مستخدم"}</h1>
-                <div className="rank-badge">
-                  <BsTrophyFill color="#f59e0b" />
-                  <span>{profile?.rank || "متطوع"}</span>
+              </div>
+
+              <div className="profile-actions">
+                <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                  <BsGearFill /> تعديل البيانات
+                </button>
+                <button className="logout-btn" onClick={() => {
+                   localStorage.removeItem("token");
+                   localStorage.removeItem("role");
+                   window.location.href = "/";
+                }}>
+                  <BsBoxArrowRight /> تسجيل الخروج
+                </button>
+              </div>
+            </div>
+
+            <div className="profile-info-section">
+              <h1 className="username">{profile?.username || "مستخدم"}</h1>
+              <div className="rank-badge">
+                <BsTrophyFill color="#f59e0b" />
+                <span>{profile?.rank || "متطوع"}</span>
+              </div>
+            </div>
+
+            <div className="profile-body">
+              <div className="stats-row">
+                <div className="stat-box">
+                  <span className="stat-value">{profile?.points || 0}</span>
+                  <span className="stat-label">النقاط</span>
+                </div>
+                <div className="stat-box">
+                  <span className="stat-value">{profile?.total_likes || 0}</span>
+                  <span className="stat-label">الإعجابات</span>
+                </div>
+                <div className="stat-box">
+                  <span className="stat-value">{posts.length}</span>
+                  <span className="stat-label">الأعمال</span>
                 </div>
               </div>
-              <button className="edit-btn" onClick={() => setIsEditing(true)}>
-                <BsGearFill /> تعديل البيانات
-              </button>
-            </div>
 
-            <div className="stats-row">
-              <div className="stat-box">
-                <span className="stat-value">{profile?.points || 0}</span>
-                <span className="stat-label">النقاط</span>
-              </div>
-              <div className="stat-box">
-                <span className="stat-value">{profile?.total_likes || 0}</span>
-                <span className="stat-label">الإعجابات</span>
-              </div>
-              <div className="stat-box">
-                <span className="stat-value">{posts.length}</span>
-                <span className="stat-label">الأعمال</span>
-              </div>
-            </div>
-
-            <div className="contact-info">
-              <div className="info-item">
-                <BsEnvelopeFill className="info-icon" />
-                <span>{profile?.email || "غير متوفر"}</span>
-              </div>
-              <div className="info-item">
-                <BsTelephoneFill className="info-icon" />
-                <span>{profile?.phone || "لم يتم إضافة رقم هاتف"}</span>
-              </div>
-              <div className="info-item">
-                <BsGeoAltFill className="info-icon" />
-                <span>{profile?.address || "لم يتم إضافة عنوان"}</span>
+              <div className="contact-info">
+                <div className="info-item">
+                  <BsEnvelopeFill className="info-icon" />
+                  <span>{profile?.email || "غير متوفر"}</span>
+                </div>
+                <div className="info-item">
+                  <BsTelephoneFill className="info-icon" />
+                  <span>{profile?.phone || "لم يتم إضافة رقم هاتف"}</span>
+                </div>
+                <div className="info-item">
+                  <BsGeoAltFill className="info-icon" />
+                  <span>{profile?.address || "لم يتم إضافة عنوان"}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -308,8 +325,8 @@ function ProfileContent() {
                         color: 'white',
                         border: 'none',
                         borderRadius: '50%',
-                        width: '30px',
-                        height: '30px',
+                        width: '35px',
+                        height: '35px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -319,7 +336,7 @@ function ProfileContent() {
                       }}
                       title="مسح العمل"
                     >
-                      ✕
+                      <BsTrashFill />
                     </button>
                     <div className="post-status" data-status={post.status}>
                       {post.status === 'approved' ? 'مقبول' : post.status === 'pending' ? 'قيد المراجعة' : 'مرفوض'}
@@ -480,33 +497,43 @@ function ProfileContent() {
           box-shadow: 0 8px 32px rgba(34, 197, 94, 0.1);
           padding: 30px;
         }
-        .profile-header {
+        .profile-cover {
+          height: 180px;
+          background: linear-gradient(135deg, #22c55e, #fbbf24);
+          width: 100%;
+        }
+        .profile-header-content {
           display: flex;
           justify-content: space-between;
-          align-items: flex-start;
-          border-bottom: 2px solid #f0f0f0;
-          padding-bottom: 20px;
+          align-items: flex-end;
+          padding: 0 40px;
+          margin-top: -60px; /* pull avatar up into cover */
+        }
+        .avatar-wrapper {
+          border-radius: 50%;
+          background: white;
+          padding: 6px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .profile-actions {
+          display: flex;
+          gap: 12px;
           margin-bottom: 20px;
         }
-        .avatar-section {
+        .profile-info-section {
+          padding: 20px 40px;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: flex-start;
           gap: 10px;
-        }
-        .avatar-img {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 4px solid #28a745;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          border-bottom: 1px solid #f1f5f9;
+          margin-bottom: 25px;
         }
         .username {
           margin: 0;
           color: #1b5e20;
-          font-weight: 800;
-          font-size: 28px;
+          font-weight: 900;
+          font-size: 32px;
         }
         .rank-badge {
           display: flex;
@@ -536,19 +563,43 @@ function ProfileContent() {
           background: #218838;
           transform: translateY(-2px);
         }
+        .logout-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: #fee2e2;
+          color: #ef4444;
+          border: 1px solid #fca5a5;
+          padding: 10px 20px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: bold;
+          transition: 0.3s;
+        }
+        .logout-btn:hover {
+          background: #fecaca;
+          color: #dc2626;
+          transform: translateY(-2px);
+        }
+        .profile-body {
+          padding: 0 40px 40px;
+        }
         .stats-row {
           display: flex;
           justify-content: space-around;
           margin-bottom: 30px;
+          gap: 15px;
+          flex-wrap: wrap;
         }
         .stat-box {
           display: flex;
           flex-direction: column;
           align-items: center;
           background: #f8f9fa;
-          padding: 15px 30px;
+          padding: 15px 20px;
           border-radius: 15px;
           box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+          flex: 1 1 25%;
         }
         .stat-value {
           font-size: 24px;
@@ -760,6 +811,33 @@ function ProfileContent() {
         @keyframes slideUp {
           from { bottom: 0; opacity: 0; }
           to { bottom: 30px; opacity: 1; }
+        }
+        @media (max-width: 600px) {
+          .profile-header-content {
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+          }
+          .profile-actions {
+            flex-direction: column;
+            width: 100%;
+            margin-top: 15px;
+          }
+          .profile-actions button {
+            width: 100%;
+            justify-content: center;
+          }
+          .profile-info-section {
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+          }
+          .profile-body {
+            padding: 0 20px 20px;
+          }
+          .stat-box {
+            padding: 15px 10px;
+          }
         }
       `}</style>
     </>

@@ -39,6 +39,8 @@ function PublicProfileContent() {
   const [totalPoints, setTotalPoints] = useState(0);
   const [totalLikes, setTotalLikes] = useState(0);
   const [userImage, setUserImage] = useState<string | null>(null);
+  const [myUsername, setMyUsername] = useState<string | null>(null);
+  const [myProfileImage, setMyProfileImage] = useState<string | null>(null);
   
   const searchParams = useSearchParams();
   const targetUser = searchParams.get('user');
@@ -91,6 +93,9 @@ function PublicProfileContent() {
     } else {
       setLoading(false);
     }
+
+    setMyUsername(localStorage.getItem("myUsername"));
+    setMyProfileImage(localStorage.getItem("myProfileImage"));
   }, [targetUser]);
 
   if (loading) {
@@ -127,15 +132,19 @@ function PublicProfileContent() {
             <div className="profile-header">
               <div className="avatar-section">
                 <div style={{ width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '4px solid #28a745', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0f0f0' }}>
-                  {userImage ? (
-                    <img 
-                      src={userImage.startsWith('http') ? userImage : `https://egyhero.social${userImage.startsWith('/') ? '' : '/'}${userImage}`} 
-                      alt={targetUser} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                    />
-                  ) : (
-                    <BsPersonCircle size={80} color="#28a745" />
-                  )}
+                  {(() => {
+                      const isMe = targetUser === myUsername;
+                      const displayImage = isMe ? (myProfileImage || userImage) : userImage;
+                      return displayImage ? (
+                        <img 
+                          src={displayImage.startsWith('http') ? displayImage : `https://egyhero.social${displayImage.startsWith('/') ? '' : '/'}${displayImage}`} 
+                          alt={targetUser || ''} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                        />
+                      ) : (
+                        <BsPersonCircle size={80} color="#28a745" />
+                      );
+                  })()}
                 </div>
                 <h1 className="username">{targetUser}</h1>
                 <div className="rank-badge">
@@ -187,7 +196,7 @@ function PublicProfileContent() {
                     <div className="post-content">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                         <ProfileImage 
-                          url={userImage} 
+                          url={(targetUser === myUsername) ? (myProfileImage || userImage) : userImage} 
                           size={35} 
                         />
                         <h3 className="post-activity" style={{ margin: 0 }}>{post.activity_name}</h3>

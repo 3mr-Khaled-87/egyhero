@@ -1,21 +1,22 @@
 'use client';
 
-import { BsPlayCircle } from 'react-icons/bs';
+import { BsPlayFill } from 'react-icons/bs';
 import Link from 'next/link';
 import './video-footer.css';
 
-export default function VideoFooter() {
+interface VideoFooterProps {
+  mobileOnly?: boolean;
+}
+
+export default function VideoFooter({ mobileOnly = false }: VideoFooterProps) {
   return (
-    <div className="video-footer" dir="rtl">
+    <div className={`video-footer${mobileOnly ? ' video-footer-mobile-only' : ''}`} dir="rtl">
       <Link 
         href="/?preview=true"
-        className="video-button"
+        className="video-float-btn"
         title="تعرف على الموقع"
       >
-        <div className="circle-icon">
-          <BsPlayCircle size={40} />
-        </div>
-        <span className="circle-label">تعرف على الموقع</span>
+        <BsPlayFill size={26} />
       </Link>
     </div>
   );

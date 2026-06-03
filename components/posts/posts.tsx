@@ -1,12 +1,15 @@
 'use client'
-import { BsPersonCircle } from "react-icons/bs"
+import { BsPersonCircle, BsPlayCircle } from "react-icons/bs"
 import { AiOutlineLike, AiFillLike, AiOutlineComment } from "react-icons/ai"
+import Link from 'next/link';
 import React from 'react';
 import './posts.css'
+import Image from 'next/image';
 import { addComment } from '@/service/comments';
 import { toggleLike } from '@/service/likes';
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '@/service/apiConfig';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface UsersPost {
     id: number;
@@ -49,11 +52,13 @@ function MediaGrid({ post }: { post: UsersPost }) {
     // 1 image, no video
     if (images.length === 1 && !hasVideo) {
         return (
-            <img
+            <Image
                 src={formatUrl(images[0])}
                 alt="post"
-                className="postImage"
-                style={{ width: '100%', height: 'auto', maxHeight: '400px', objectFit: 'cover', borderRadius: '12px' }}
+                style={{ width: '100%', height: 'auto', maxHeight: '230px', objectFit: 'cover', borderRadius: '12px' }}
+                width={500}
+                height={300}
+                priority
             />
         );
     }
@@ -64,7 +69,7 @@ function MediaGrid({ post }: { post: UsersPost }) {
         gap: '6px',
         borderRadius: '12px',
         overflow: 'hidden',
-        maxHeight: '380px',
+        maxHeight: '210px',
         gridTemplateColumns: totalMedia === 2 ? '1fr 1fr' :
             totalMedia === 3 ? '2fr 1fr' :
                 '1fr 1fr',
@@ -89,7 +94,7 @@ function MediaGrid({ post }: { post: UsersPost }) {
                         minHeight: '150px',
                     }}
                 >
-                    <img src={formatUrl(src)} alt={`صورة ${i + 1}`} style={imgStyle} />
+                    <Image src={formatUrl(src)} alt={`صورة ${i + 1}`} style={imgStyle} width={500} height={300} />
                 </div>
             ))}
             {hasVideo && (
@@ -141,18 +146,19 @@ function getComments(postId: number) {
 
 
 export default function Posts() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const targetPostId = searchParams.get('post');
 
     const [comments, setComments] = useState<{ [key: number]: string }>({})
-
-
     const [reaction, setReaction] = useState<{
         [key: number]: { like: boolean }
     }>({})
-
     const [allPosts, setAllPosts] = useState<UsersPost[]>([])
     const [allComments, setAllComments] = useState<{ [key: number]: CommentItem[] }>({})
     const [showComments, setShowComments] = useState<{ [key: number]: boolean }>({})
-    const [expandedPosts, setExpandedPosts] = useState<{ [key: number]: boolean }>({})
+    const [myUsername, setMyUsername] = useState<string | null>(null);
+    const [myProfileImage, setMyProfileImage] = useState<string | null>(null);
     const [notification, setNotification] = useState<{ msg: string, type: 'success' | 'error' } | null>(null)
     const [postsLoading, setPostsLoading] = useState(true)
 
@@ -177,32 +183,57 @@ export default function Posts() {
     };
 
     useEffect(() => {
-        const localLikes = getLocalLikes();
-
-        getPosts().then(rawData => {
+        const fetchData = async () => {
+            const localLikes = getLocalLikes();
+            const rawData = await getPosts();
             const data = Array.isArray(rawData) ? rawData : (rawData.results || []);
             const approvedPosts = data.filter((post: UsersPost & { status?: string }) => post.status === 'approved');
-            setAllPosts(approvedPosts)
+            setAllPosts(approvedPosts);
 
             const initialReactions: { [key: number]: { like: boolean } } = {};
-
-            approvedPosts.forEach((post: UsersPost & { is_liked?: boolean }) => {
-                getComments(post.id).then(comments => {
-                    setAllComments(prev => ({
-                        ...prev,
-                        [post.id]: Array.isArray(comments) ? comments : []
-                    }))
-                })
-
-                // Merge Server state with Local Cache
+            for (const post of approvedPosts) {
+                const comments = await getComments(post.id);
+                setAllComments(prev => ({
+                    ...prev,
+                    [post.id]: Array.isArray(comments) ? comments : []
+                }));
                 const isLikedLocally = localLikes.includes(post.id);
                 const isLikedServer = post.is_liked === true;
-
                 initialReactions[post.id] = { like: isLikedLocally || isLikedServer };
-            });
+            }
             setReaction(initialReactions);
-        }).finally(() => setPostsLoading(false))
-    }, [])
+            setPostsLoading(false);
+            const username = typeof window !== 'undefined' ? localStorage.getItem('myUsername') : null;
+            const profileImg = typeof window !== 'undefined' ? localStorage.getItem('myProfileImage') : null;
+            setMyUsername(username);
+            setMyProfileImage(profileImg);
+        };
+        fetchData();
+    }, []);
+
+    // Highlight and scroll to target post from notifications
+    useEffect(() => {
+        if (!postsLoading && targetPostId && allPosts.length > 0) {
+            const postId = parseInt(targetPostId);
+            setTimeout(() => {
+                const element = document.getElementById(`post-${postId}`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    element.style.transition = "all 0.5s ease";
+                    element.style.boxShadow = "0 0 20px rgba(40, 167, 69, 0.4)";
+                    element.style.border = "2px solid #28a745";
+                    // Automatically open comments
+                    setShowComments(prev => ({ ...prev, [postId]: true }));
+                    
+                    // Remove highlight after a few seconds
+                    setTimeout(() => {
+                        element.style.boxShadow = "";
+                        element.style.border = "";
+                    }, 3000);
+                }
+            }, 500);
+        }
+    }, [postsLoading, targetPostId, allPosts]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -243,13 +274,15 @@ export default function Posts() {
         }
     }
 
+    // State to track expanded/collapsed description per post
+    const [expandedPosts, setExpandedPosts] = useState<Record<number, boolean>>({});
     return (
         <>
             <div className="main-layout-container">
                 {/* Left Sidebar */}
                 <aside className="sidebar left-sidebar">
                     <div className="sidebar-content">
-                        <h3>🌱 إلهام </h3>
+                        <h3>🌱 إلهام اليوم</h3>
                         <div className="quote-card">
                             <p>{"\u0022"}خيرُ الناسِ أنفعُهم للناس{"\u0022"}</p>
                         </div>
@@ -285,32 +318,38 @@ export default function Posts() {
                             </div>
                         ) : (
                             Array.isArray(allPosts) && allPosts.map((post: UsersPost, postIdx: number) => (
-                                <div key={post.id} className="postsDiv">
+                                <div key={post.id} id={`post-${post.id}`} className="postsDiv">
                                     {/* Flex Header: User (R) | Activity (C) | Points (L) */}
                                     <div style={{
                                         display: 'flex',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
-                                        marginBottom: '20px',
-                                        paddingBottom: '12px',
+                                        marginBottom: '12px',
+                                        paddingBottom: '8px',
                                         borderBottom: '1px solid #f1f5f9'
                                     }}>
                                         {/* Right: User Avatar and Name */}
                                         <div
                                             className="user-info-side"
                                             style={{ flex: '1', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '12px', cursor: 'pointer' }}
-                                            onClick={() => window.location.href = `/public-profile?user=${encodeURIComponent(post.user)}`}
+                                            onClick={() => router.push(`/public-profile?user=${encodeURIComponent(post.user)}`)}
                                         >
                                             <div style={{ width: '42px', height: '42px', borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0f0f0', border: '1.5px solid #28a745', flexShrink: 0 }}>
-                                                {post.user_image ? (
-                                                    <img
-                                                        src={post.user_image.startsWith('http') ? post.user_image : `https://egyhero.social${post.user_image.startsWith('/') ? '' : '/'}${post.user_image}`}
-                                                        alt={post.user}
-                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                    />
-                                                ) : (
-                                                    <BsPersonCircle className='personIcon' size={42} color="#28a745" />
-                                                )}
+                                                {(() => {
+                                                    const isMe = post.user === myUsername;
+                                                    const displayImage = isMe ? (myProfileImage || post.user_image) : post.user_image;
+                                                    return displayImage ? (
+                                                        <Image
+                                                            src={displayImage.startsWith('http') ? displayImage : `https://egyhero.social${displayImage.startsWith('/') ? '' : '/'}${displayImage}`}
+                                                            alt={post.user}
+                                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                            width={42}
+                                                            height={42}
+                                                        />
+                                                    ) : (
+                                                        <BsPersonCircle className='personIcon' size={42} color="#28a745" />
+                                                    );
+                                                })()}
                                             </div>
                                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                                                 <h5 className='personName' style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#1e293b', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -466,6 +505,18 @@ export default function Posts() {
                             <p>{"\u0022"}ارحمُوا مَن في الأرضِ يرحمْكم مَن في السماء{"\u0022"}</p>
                         </div>
 
+                        <div className="hel-taelam-card">
+                            <p className="hel-taelam-title">هل تعلم؟ 💡</p>
+                            <p className="hel-taelam-text">المتطوعون يعيشون حياة أطول وأكثر سعادة!</p>
+                        </div>
+
+                        <Link href="/?preview=true" className="sidebar-video-wrapper">
+                            <div className="sidebar-video-circle">
+                                <BsPlayCircle size={36} />
+                            </div>
+                            <span className="sidebar-video-label">تعرف على الموقع</span>
+                        </Link>
+
                     </div>
                 </aside>
             </div>
@@ -476,113 +527,6 @@ export default function Posts() {
                 </div>
             )}
 
-            <style jsx>{`
-                .main-layout-container {
-                    display: flex;
-                    height: 100vh;
-                    background-color: #f8fafc;
-                    padding-top: 80px; /* Space for the header */
-                    direction: rtl;
-                    overflow: hidden; /* Prevents main screen scroll */
-                }
-                .sidebar {
-                    width: 25%;
-                    padding: 20px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center; 
-                    gap: 20px;
-                    background-color: #3cff56ff7c7ff;
-                    border-left: 1px solid #e2e8f0;
-                    border-right: 1px solid #e2e8f0;
-                    overflow-y: hidden;
-                    scrollbar-width: none;
-                }
-                .sidebar::-webkit-scrollbar {
-                    display: none;
-                }
-                .sidebar-content {
-                    margin-top: 20px;
-                }
-                .sidebar-content h3 {
-                    color: #28a745;
-                    font-size: 20px;
-                    font-weight: 800;
-                    margin-bottom: 20px;
-                    text-align: center;
-                }
-                .quote-card {
-                    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-                    padding: 20px;
-                    border-radius: 15px;
-                    margin-bottom: 15px;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-                    border: 1px solid #b7ebc6;
-                }
-                .quote-card p {
-                    margin: 0;
-                    font-size: 16px;
-                    font-weight: bold;
-                    color: #1b5e20;
-                    line-height: 1.6;
-                    text-align: center;
-                }
-                .stats-mini-card {
-                    background: #fdf2f2;
-                    padding: 15px;
-                    border-radius: 12px;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 5px;
-                    margin-top: 20px;
-                    border: 1px solid #fecaca;
-                }
-                .stats-mini-card span {
-                    font-weight: 800;
-                    color: #991b1b;
-                }
-                .posts-column {
-                    flex: 1;
-                    padding: 20px;
-                    height: 100%;
-                    overflow-y: auto;
-                    scrollbar-width: none; /* Firefox */
-                    -ms-overflow-style: none; /* IE and Edge */
-                }
-                .posts-column::-webkit-scrollbar {
-                    display: none; /* Chrome, Safari, Opera */
-                }
-                .notify-toast {
-                    position: fixed;
-                    bottom: 30px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background-color: #28a745;
-                    color: white;
-                    padding: 12px 25px;
-                    border-radius: 50px;
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                    z-index: 9999;
-                    font-weight: bold;
-                    white-space: nowrap;
-                    min-width: max-content;
-                    text-align: center;
-                }
-                @media (max-width: 1000px) {
-                    .sidebar { display: none; }
-                    .posts-column { width: 100%; }
-                }
-                @media (max-width: 600px) {
-                    .activity-center-badge {
-                        display: none !important;
-                    }
-                    .notify-toast {
-                        width: 90%;
-                        max-width: 400px;
-                        font-size: 14px;
-                    }
-                }
-            `}</style>
         </>
     );
 }
