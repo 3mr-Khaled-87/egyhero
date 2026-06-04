@@ -146,7 +146,7 @@ function PublicProfileContent() {
                       );
                   })()}
                 </div>
-                <h1 className="username">{targetUser}</h1>
+                <h1 className="username">{myUsername || targetUser}</h1>
                 <div className="rank-badge">
                   <BsTrophyFill color="#f59e0b" />
                   <span>متطوع</span>
@@ -195,10 +195,7 @@ function PublicProfileContent() {
                     )}
                     <div className="post-content">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                        <ProfileImage 
-                          url={(targetUser === myUsername) ? (myProfileImage || userImage) : userImage} 
-                          size={35} 
-                        />
+
                         <h3 className="post-activity" style={{ margin: 0 }}>{post.activity_name}</h3>
                       </div>
                       <p className="post-desc">{post.description}</p>

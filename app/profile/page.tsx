@@ -19,6 +19,8 @@ interface ProfileData {
   rank: string;
   profile_image: string | null;
   image?: string | null;
+  first_name?: string;
+  last_name?: string;
 }
 
 interface UserPost {
@@ -263,7 +265,9 @@ function ProfileContent() {
             </div>
 
             <div className="profile-info-section">
-              <h1 className="username">{profile?.username || "مستخدم"}</h1>
+              <h1 className="username">
+                {(profile?.first_name && profile?.last_name) ? `${profile.first_name} ${profile.last_name}` : (profile?.username || "مستخدم")}
+              </h1>
               <div className="rank-badge">
                 <BsTrophyFill color="#f59e0b" />
                 <span>{profile?.rank || "متطوع"}</span>
@@ -354,10 +358,7 @@ function ProfileContent() {
                     )}
                     <div className="post-content">
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                        <ProfileImage 
-                          url={profile?.image || profile?.profile_image} 
-                          size={35} 
-                        />
+
                         <h3 className="post-activity" style={{ margin: 0 }}>{post.activity_name}</h3>
                       </div>
                       <p className="post-desc">{post.description}</p>

@@ -8,6 +8,7 @@
   max-width: 90%;
   width: 100%;
   max-width: 500px;
+  pointer-events: none;
 }
 
 /* Show on mobile screens only */
@@ -19,10 +20,12 @@
 
 .daily-toast.show .toast-card {
   animation: slideDown 0.4s ease-in-out forwards;
+  pointer-events: auto;
 }
 
 .daily-toast.hide .toast-card {
   animation: slideUp 0.4s ease-in-out forwards;
+  pointer-events: none;
 }
 
 @keyframes slideDown {

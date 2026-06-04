@@ -257,3 +257,9 @@
     .formContainer { flex: 1; }
     .backLink { right: 20px; top: 20px; padding: 10px 20px; font-size: 14px; }
 }
+
+@media (max-width: 600px) {
+    .nameRow {
+        flex-direction: column;
+    }
+}

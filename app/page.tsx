@@ -155,11 +155,13 @@ export default function LandingPage() {
       <main className="landing-main">
         {/* Video Placeholder */}
         <div className="video-box-container">
-          <div className="dashed-video-box">
-            <div className="play-icon-circle">
-              <BsPlayFill size={50} color="#1b5e20" />
-            </div>
-          </div>
+          <video 
+            src="/videos/intro.mp4" 
+            controls 
+            style={{ width: '100%', borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
+          >
+            متصفحك لا يدعم تشغيل الفيديو.
+          </video>
         </div>
 
         {/* Stats Row */}
@@ -199,17 +201,30 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* Small Footer */}
-      <footer className="landing-small-footer">
-          <div className="cooperation-section">
-              <div className="coop-text">
-                  <span>نفتخر بأن هذه المنصة تم إطلاقها بالتعاون المثمر مع </span>
-                  <span className="highlight-text">مؤسسة حياة كريمة </span>
-                  <span>لتعزيز روح التطوع وخدمة المجتمع.</span>
+      {/* Modern Professional Footer */}
+      <footer className="landing-modern-footer">
+          <div className="footer-content">
+              <div className="cooperation-badge">
+                  <div className="coop-text-modern">
+                      <span>نفتخر بأن هذه المنصة تم إطلاقها بالتعاون المثمر مع </span>
+                      <span className="highlight-gold">مؤسسة حياة كريمة </span>
+                      <br className="mobile-break" />
+                      <span>لتعزيز روح التطوع وخدمة المجتمع.</span>
+                  </div>
+                  <div className="coop-logo-wrapper">
+                      <Image src={Hlogo} alt="Hayah Karema logo" className="hk-logo-modern" />
+                  </div>
               </div>
-              <Image src={Hlogo} alt="Hayah Karema logo" className="hk-logo" />
+              
+              <div className="footer-bottom-bar">
+                  <p>© {new Date().getFullYear()} Egy Hero. جميع الحقوق محفوظة.</p>
+                  <div className="footer-links">
+                      <a href="/home">الرئيسية</a>
+                      <span className="dot-separator">•</span>
+                      <a href="/register">انضم إلينا</a>
+                  </div>
+              </div>
           </div>
-          <p>© {new Date().getFullYear()} Egy Hero. جميع الحقوق محفوظة.</p>
       </footer>
 
       <VideoFooter />

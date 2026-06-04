@@ -335,21 +335,7 @@ export default function Posts() {
                                             onClick={() => router.push(`/public-profile?user=${encodeURIComponent(post.user)}`)}
                                         >
                                             <div style={{ width: '42px', height: '42px', borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0f0f0', border: '1.5px solid #28a745', flexShrink: 0 }}>
-                                                {(() => {
-                                                    const isMe = post.user === myUsername;
-                                                    const displayImage = isMe ? (myProfileImage || post.user_image) : post.user_image;
-                                                    return displayImage ? (
-                                                        <Image
-                                                            src={displayImage.startsWith('http') ? displayImage : `https://egyhero.social${displayImage.startsWith('/') ? '' : '/'}${displayImage}`}
-                                                            alt={post.user}
-                                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                            width={42}
-                                                            height={42}
-                                                        />
-                                                    ) : (
-                                                        <BsPersonCircle className='personIcon' size={42} color="#28a745" />
-                                                    );
-                                                })()}
+                                                <BsPersonCircle className='personIcon' size={42} color="#28a745" />
                                             </div>
                                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                                                 <h5 className='personName' style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#1e293b', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '8px' }}>
