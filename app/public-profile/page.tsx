@@ -146,7 +146,7 @@ function PublicProfileContent() {
                       );
                   })()}
                 </div>
-                <h1 className="username">{myUsername || targetUser}</h1>
+                <h1 className="username">{targetUser}</h1>
                 <div className="rank-badge">
                   <BsTrophyFill color="#f59e0b" />
                   <span>متطوع</span>

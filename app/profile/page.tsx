@@ -266,7 +266,11 @@ function ProfileContent() {
 
             <div className="profile-info-section">
               <h1 className="username">
-                {(profile?.first_name && profile?.last_name) ? `${profile.first_name} ${profile.last_name}` : (profile?.username || "مستخدم")}
+                {(() => {
+                  const fName = profile?.first_name || (profile as any)?.user?.first_name;
+                  const lName = profile?.last_name || (profile as any)?.user?.last_name;
+                  return (fName && lName) ? `${fName} ${lName}` : (profile?.username || (profile as any)?.user?.username || "مستخدم");
+                })()}
               </h1>
               <div className="rank-badge">
                 <BsTrophyFill color="#f59e0b" />

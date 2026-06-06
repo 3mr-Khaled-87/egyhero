@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Header from '@/components/header/header';
 import Hlogo from '@/imgs/Hlogo.png';
 import './about.css';
+import { BsPersonFill } from "react-icons/bs";
 
 const supervisor = {
     name: 'د. أحمد محمود صالح',
@@ -36,11 +37,10 @@ const social = [
 ];
 
 function MemberCard({ name, delay = 0 }: { name: string; delay?: number }) {
-    const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2);
     return (
         <div className="member-card" style={{ animationDelay: `${delay * 0.1}s` }}>
             <div className="member-avatar">
-                <span>{initials}</span>
+                <BsPersonFill size={20} color="white" />
             </div>
             <p className="member-name">{name}</p>
         </div>
@@ -94,7 +94,7 @@ export default function AboutPage() {
                         نحن مجموعة من الشباب المصري المؤمن بقوة التطوع وأثره في المجتمع،
                         اجتمعنا لبناء منصة تُلهم وتُحفّز أبطال التطوع على مشاركة قصصهم مع العالم.
                     </p>
-                    
+
                 </section>
 
                 {/* Supervisor Card */}
@@ -107,7 +107,7 @@ export default function AboutPage() {
                         </div>
                         <h2 className="supervisor-name">{supervisor.name}</h2>
                         <p className="supervisor-role">{supervisor.role}</p>
-                        
+
                     </div>
                 </section>
 
@@ -158,7 +158,7 @@ export default function AboutPage() {
                         </blockquote>
                         <p>معًا نصنع فارقاً ❤️</p>
                     </div>
-                    
+
                     <div className="small-footer-bottom">
                         <div className="cooperation-section">
                             <span>بالتعاون مع مؤسسة حياة كريمة</span>

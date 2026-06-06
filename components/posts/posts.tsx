@@ -224,7 +224,7 @@ export default function Posts() {
                     element.style.border = "2px solid #28a745";
                     // Automatically open comments
                     setShowComments(prev => ({ ...prev, [postId]: true }));
-                    
+
                     // Remove highlight after a few seconds
                     setTimeout(() => {
                         element.style.boxShadow = "";
@@ -335,7 +335,15 @@ export default function Posts() {
                                             onClick={() => router.push(`/public-profile?user=${encodeURIComponent(post.user)}`)}
                                         >
                                             <div style={{ width: '42px', height: '42px', borderRadius: '50%', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0f0f0', border: '1.5px solid #28a745', flexShrink: 0 }}>
-                                                <BsPersonCircle className='personIcon' size={42} color="#28a745" />
+                                                {post.user_image ? (
+                                                    <img
+                                                        src={post.user_image.startsWith('http') ? post.user_image : `https://egyhero.social${post.user_image.startsWith('/') ? '' : '/'}${post.user_image}`}
+                                                        alt={post.user}
+                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                    />
+                                                ) : (
+                                                    <BsPersonCircle className='personIcon' size={42} color="#28a745" />
+                                                )}
                                             </div>
                                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                                                 <h5 className='personName' style={{ margin: 0, fontSize: '16px', fontWeight: 'bold', color: '#1e293b', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '8px' }}>
