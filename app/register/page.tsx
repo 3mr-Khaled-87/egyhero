@@ -37,6 +37,10 @@ export default function RegisterPage() {
         setError("")
         try {
             await registerUser(form)
+            // Save the real username to localStorage for use on profile page
+            if (form.username) {
+                localStorage.setItem("displayUsername", form.username)
+            }
             router.push("/login")
         } catch (err) {
             console.error(err)
