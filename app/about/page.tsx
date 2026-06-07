@@ -4,167 +4,146 @@ import Image from 'next/image';
 import Header from '@/components/header/header';
 import Hlogo from '@/imgs/Hlogo.png';
 import './about.css';
-import { BsPersonFill } from "react-icons/bs";
 
 const supervisor = {
     name: 'د. أحمد محمود صالح',
     role: 'المشرف العام على المشروع',
-    emoji: '🎓',
+    photo: '/team/dr_ahmed.jfif',
 };
 
 const frontEnd = [
-    { name: 'عمرو خالد' },
-    { name: 'آية الله خالد' },
-    { name: 'إسراء جميل' },
-    { name: 'جهاد عيد' },
+    { name: 'عمرو خالد',      role: 'Frontend Developer', photo: '/team/amr_khaled.jfif' },
+    { name: 'آية الله خالد', role: 'Frontend Developer', photo: '/team/ayat_allah_khaled.jfif' },
+    { name: 'إسراء جميل',    role: 'Frontend Developer', photo: '/team/israa_jameel.jfif' },
+    { name: 'جهاد عيد',      role: 'Frontend Developer', photo: '/team/gehad_eid.png' },
 ];
 
 const uiTeam = [
-    { name: 'آية رمضان' },
-    { name: 'سهيلة فتحي' },
-    { name: 'سهيلة شعبان' },
+    { name: 'آية رمضان',   role: 'UI / UX Designer', photo: '/team/aya_ramadan.jfif' },
+    { name: 'سهيلة فتحي',  role: 'UI / UX Designer', photo: '/team/suhaila_fathi.jfif' },
+    { name: 'سهيلة شعبان', role: 'UI / UX Designer', photo: '/team/suhaila_shaaban.jfif' },
 ];
 
 const backEnd = [
-    { name: 'علاء منصور' },
-    { name: 'نورهان بدر الدين' },
-    { name: 'يوسف ربيع' },
+    { name: 'علاء منصور',       role: 'Backend Developer', photo: '/team/alaa_mansour.jfif' },
+    { name: 'نورهان بدر الدين', role: 'Backend Developer', photo: '/team/nourhan_badr.jfif' },
+    { name: 'يوسف ربيع',        role: 'Backend Developer', photo: '/team/yousef_rabie.jfif' },
 ];
 
 const social = [
-    { name: 'أمنية وائل' },
-    { name: 'أسماء محمد' },
+    { name: 'أمنية وائل',  role: 'Social Media Manager', photo: '/team/omneya_wael.jfif' },
+    { name: 'أسماء قناوي', role: 'Social Media Manager', photo: '/team/asmaa_qanawi.jfif' },
 ];
 
-function MemberCard({ name, delay = 0 }: { name: string; delay?: number }) {
-    return (
-        <div className="member-card" style={{ animationDelay: `${delay * 0.1}s` }}>
-            <div className="member-avatar">
-                <BsPersonFill size={20} color="white" />
-            </div>
-            <p className="member-name">{name}</p>
-        </div>
-    );
-}
-
-function TeamSection({
-    title,
-    icon,
-    members,
-    color,
-    startDelay,
-}: {
-    title: string;
-    icon: string;
-    members: { name: string }[];
-    color: string;
-    startDelay: number;
-}) {
-    return (
-        <div className="team-section">
-            <div className="team-section-header" style={{ borderColor: color }}>
-                <span className="team-icon">{icon}</span>
-                <h3 className="team-title" style={{ color }}>{title}</h3>
-            </div>
-            <div className="members-grid">
-                {members.map((m, i) => (
-                    <MemberCard key={m.name} name={m.name} delay={startDelay + i} />
-                ))}
-            </div>
-        </div>
-    );
-}
+const teams = [
+    { title: 'الفرونت إند', icon: '💻', members: frontEnd, accent: '#16a34a', tag: 'Frontend' },
+    { title: 'UI / UX',     icon: '🎨', members: uiTeam,   accent: '#d97706', tag: 'Design' },
+    { title: 'الباك إند',   icon: '⚙️', members: backEnd,  accent: '#0ea5e9', tag: 'Backend' },
+    { title: 'السوشيال ميديا', icon: '📣', members: social, accent: '#9333ea', tag: 'Media' },
+];
 
 export default function AboutPage() {
     return (
         <>
             <Header />
             <main className="about-page" dir="rtl">
-                {/* Hero Section */}
-                <section className="about-hero">
-                    <div className="hero-orb hero-orb-1" />
-                    <div className="hero-orb hero-orb-2" />
-                    <div className="hero-badge">
-                        <span>🌟 فريق Egy Hero</span>
-                    </div>
-                    <h1 className="hero-title">
-                        من <span className="gradient-text">نحن</span>؟
-                    </h1>
-                    <p className="hero-subtitle">
-                        نحن مجموعة من الشباب المصري المؤمن بقوة التطوع وأثره في المجتمع،
-                        اجتمعنا لبناء منصة تُلهم وتُحفّز أبطال التطوع على مشاركة قصصهم مع العالم.
-                    </p>
 
+                {/* ── HERO ── */}
+                <section className="hero">
+                    <div className="hero-blob b1" />
+                    <div className="hero-blob b2" />
+                    <div className="hero-blob b3" />
+                    <div className="hero-inner">
+                        <span className="hero-chip">🌟 فريق Egy Hero</span>
+                        <h1 className="hero-heading">
+                            من <em>نحن</em>؟
+                        </h1>
+                        <p className="hero-sub">
+                            شباب مصري مؤمن بالتطوع، اجتمعنا لبناء منصة تُلهم الأبطال وتُحفّزهم على مشاركة قصصهم مع العالم.
+                        </p>
+                    </div>
                 </section>
 
-                {/* Supervisor Card */}
-                <section className="supervisor-section">
-                    <div className="supervisor-card">
-                        <div className="supervisor-glow" />
-                        <div className="supervisor-badge">المشرف العام</div>
-                        <div className="supervisor-avatar">
-                            <span className="supervisor-emoji">{supervisor.emoji}</span>
+                {/* ── SUPERVISOR ── */}
+                <section className="sup-section">
+                    <div className="sup-card">
+                        <div className="sup-ribbon">المشرف العام</div>
+                        <div className="sup-photo-wrap">
+                            <div className="sup-ring" />
+                            <Image
+                                src={supervisor.photo}
+                                alt={supervisor.name}
+                                width={140}
+                                height={140}
+                                className="sup-photo"
+                                unoptimized
+                            />
                         </div>
-                        <h2 className="supervisor-name">{supervisor.name}</h2>
-                        <p className="supervisor-role">{supervisor.role}</p>
-
+                        <h2 className="sup-name">{supervisor.name}</h2>
+                        <p className="sup-role">{supervisor.role}</p>
                     </div>
                 </section>
 
-                {/* Divider */}
-                <div className="section-divider">
-                    <div className="divider-line" />
-                    <span className="divider-text">⚡ فريق العمل</span>
-                    <div className="divider-line" />
+                {/* ── DIVIDER ── */}
+                <div className="wave-divider" aria-hidden="true">
+                    <span>⚡ فريق العمل</span>
                 </div>
 
-                {/* Teams */}
-                <section className="teams-container">
-                    <TeamSection
-                        title="تيم الفرونت إند"
-                        icon="💻"
-                        members={frontEnd}
-                        color="#16a34a"
-                        startDelay={0}
-                    />
-                    <TeamSection
-                        title="تيم الـ UI / UX"
-                        icon="🎨"
-                        members={uiTeam}
-                        color="#eab308"
-                        startDelay={4}
-                    />
-                    <TeamSection
-                        title="تيم الباك إند"
-                        icon="⚙️"
-                        members={backEnd}
-                        color="#16a34a"
-                        startDelay={7}
-                    />
-                    <TeamSection
-                        title="تيم السوشيال ميديا"
-                        icon="📣"
-                        members={social}
-                        color="#eab308"
-                        startDelay={10}
-                    />
+                {/* ── TEAMS ── */}
+                <section className="teams-wrapper">
+                    {teams.map((team) => (
+                        <div key={team.title} className="team-block">
+                            {/* Team header */}
+                            <div className="team-head" style={{ '--accent': team.accent } as React.CSSProperties}>
+                                <span className="team-icon-badge">{team.icon}</span>
+                                <div>
+                                    <p className="team-tag">{team.tag}</p>
+                                    <h3 className="team-name">{team.title}</h3>
+                                </div>
+                            </div>
+
+                            {/* Members grid */}
+                            <div className="members-grid">
+                                {team.members.map((m, i) => (
+                                    <div
+                                        key={m.name}
+                                        className="member-card"
+                                        style={{
+                                            animationDelay: `${i * 0.08}s`,
+                                            '--accent': team.accent,
+                                        } as React.CSSProperties}
+                                    >
+                                        <div className="member-photo-wrap">
+                                            <div className="member-ring" />
+                                            <Image
+                                                src={m.photo}
+                                                alt={m.name}
+                                                width={80}
+                                                height={80}
+                                                className="member-photo"
+                                                unoptimized
+                                            />
+                                        </div>
+                                        <p className="member-name">{m.name}</p>
+                                        <p className="member-role">{m.role}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
                 </section>
 
-                {/* Footer Quote & Footer */}
-                <footer className="about-footer-quote">
-                    <div className="quote-content">
-                        <blockquote>
-                            &quot;خيرُ الناسِ أنفعُهم للناس&quot;
-                        </blockquote>
-                        <p>معًا نصنع فارقاً ❤️</p>
-                    </div>
-
-                    <div className="small-footer-bottom">
-                        <div className="cooperation-section">
+                {/* ── FOOTER QUOTE ── */}
+                <footer className="about-footer" dir="rtl">
+                    <div className="footer-glow" />
+                    <blockquote>&quot;خيرُ الناسِ أنفعُهم للناس&quot;</blockquote>
+                    <p className="footer-sub">معًا نصنع فارقاً ❤️</p>
+                    <div className="footer-bottom">
+                        <div className="collab-pill">
                             <span>بالتعاون مع مؤسسة حياة كريمة</span>
-                            <Image src={Hlogo} alt="Hayah Karema logo" className="hk-logo" />
+                            <Image src={Hlogo} alt="Hayah Karema" className="hk-logo" />
                         </div>
-                        <p>© {new Date().getFullYear()} Egy Hero. جميع الحقوق محفوظة.</p>
+                        <p className="copy">© {new Date().getFullYear()} Egy Hero. جميع الحقوق محفوظة.</p>
                     </div>
                 </footer>
             </main>
